@@ -1,9 +1,7 @@
-import datetime
-
 from beanie import init_beanie as _init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from app.models.peer import Peer
+from wg_node.database.peer import Peer
 
 
 async def init_database(host: str, port: int, user: str, password: str, database: str):

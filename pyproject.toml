@@ -1,6 +1,6 @@
 [project]
-name = ""
-version = ""
+name = "wg_node"
+version = "0.1.0"
 description = ""
 authors = [
     {name = "jieggii", email = "jieggii@protonmail.com"},
@@ -10,6 +10,9 @@ dependencies = [
     "beanie>=1.19.0",
     "betterconf>=2.6.1",
     "loguru>=0.7.0",
+    "aiofile>=3.8.5",
+    "uvicorn[standard]>=0.22.0",
+    "pynacl>=1.5.0",
 ]
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -21,7 +24,7 @@ dev = [
 ]
 
 [tool.pdm.scripts]
-fmt.shell = "isort ./app/ && black ./app/"
+fmt.shell = "isort ./wg_node/ && black ./wg_node/"
 
 [tool.black]
 line-length = 99

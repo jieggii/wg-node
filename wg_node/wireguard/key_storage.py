@@ -1,11 +1,11 @@
 import json
 import pathlib
 
-from .keys import generate_keys
+from .key import generate_keypair
 
 
 class KeyStorage:
-    """KeyStorage manages Wireguard server key storage (private and public keys)"""
+    """KeyStorage manages Wireguard server key storage file (private and public keys)"""
 
     path: pathlib.PosixPath
 
@@ -20,7 +20,7 @@ class KeyStorage:
             json.dump({"private_key": private_key, "public_key": public_key}, file, indent=4)
 
     def generate_keys_and_store(self):
-        private_key, public_key = generate_keys()
+        private_key, public_key = generate_keypair()
         self._store(private_key, public_key)
 
     def read_keys(self) -> (str, str):
