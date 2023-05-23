@@ -16,6 +16,9 @@ class KeyStorage:
         return self.path.exists()
 
     def _store(self, private_key: str, public_key: str):
+        if not self.path.parent.exists():  # create parent directory if it doesn't exist
+            self.path.parent.mkdir()
+
         with open(self.path, "x", encoding="utf-8") as file:
             json.dump({"private_key": private_key, "public_key": public_key}, file, indent=4)
 

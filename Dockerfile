@@ -23,9 +23,7 @@ WORKDIR /wg-node
 COPY --from=builder /wg-node-build/__pypackages__/3.11/lib ./lib/
 ENV PYTHONPATH=/wg-node/lib
 
-#RUN apk add -U --no-cache \
-#  wireguard-tools \
-#  dumb-init
+RUN apk add -U --no-cache wireguard-tools dumb-init
 
 EXPOSE 51820/udp
 EXPOSE 51821/tcp

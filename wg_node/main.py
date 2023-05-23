@@ -4,10 +4,11 @@ from fastapi import FastAPI
 
 from wg_node.config import config
 from wg_node.database import init_database
-from wg_node.http.routers import peer, node
+from wg_node.http.routers import node, peer
 
 # initialize database
-asyncio.run(
+loop = asyncio.get_running_loop()
+db_init_task = loop.create_task(
     init_database(
         host=config.Mongo.HOST,
         port=config.Mongo.PORT,
@@ -16,6 +17,7 @@ asyncio.run(
         database=config.Mongo.DATABASE,
     )
 )
+db_init_task.add_done_callback(lambda t: print(f"task was finished {t.result()}"))
 
 # initialize FastAPI app
 app = FastAPI()

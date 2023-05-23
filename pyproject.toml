@@ -12,7 +12,6 @@ dependencies = [
     "loguru>=0.7.0",
     "aiofile>=3.8.5",
     "uvicorn[standard]>=0.22.0",
-    "pynacl>=1.5.0",
 ]
 requires-python = ">=3.10"
 license = {text = "MIT"}

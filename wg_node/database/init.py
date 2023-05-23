@@ -5,6 +5,6 @@ from wg_node.database.peer import Peer
 
 
 async def init_database(host: str, port: int, user: str, password: str, database: str):
-    # client = AsyncIOMotorClient(f"database://{user}:{password}@{host}:{port}")
-    client = AsyncIOMotorClient("database://localhost:27017")
+    client = AsyncIOMotorClient(f"mongodb://{user}:{password}@{host}:{port}")
+    # client = AsyncIOMotorClient("mongodb://localhost:27017")
     await _init_beanie(database=client[database], document_models=[Peer])

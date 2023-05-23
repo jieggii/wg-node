@@ -24,8 +24,8 @@ def generate_peer_address(taken_addresses: list[str]) -> str | None:
 
     # adding server address to list of taken addresses 'cause it cannot be used for new peer
     taken_addresses.append(_SERVER_INTERFACE_ADDRESS)
-    for x in range(0, 255):
-        for y in range(0, 255):
+    for x in range(1, 255):
+        for y in range(1, 255):
             address = _PEER_INTERFACE_ADDRESS_PATTERN.replace("x", str(x)).replace("y", str(y))
             if address not in taken_addresses:
                 return address
