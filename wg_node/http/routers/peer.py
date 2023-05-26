@@ -1,71 +1,95 @@
+import asyncio
 from http import HTTPStatus
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
+from loguru import logger
 from pydantic import BaseModel
 
 from wg_node.database import Peer
-from wg_node.wireguard.key_storage import KeyStorage
-from wg_node.wireguard.wireguard_config import WireguardConfig, generate_peer_address
+from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_peer_address
 
 router = APIRouter(prefix="/peer")
 
-# initialize server key storage
-key_storage = KeyStorage(
-    path="/etc/wireguard-node/server-keys.json"
-)  # remember to update mount point in docker-compose.yml when updating path
-if not key_storage.exists():
-    key_storage.generate_keys_and_store()
+loop = asyncio.get_running_loop()
 
-# initialize wireguard config
-private_key, public_key = key_storage.read_keys()
-wireguard_config = WireguardConfig(
-    path="/etc/wireguard/wg0.conf", private_key=private_key, public_key=public_key
-)
+
+async def update_wg_config() -> None:
+    peers = await Peer.all().to_list()
+    logger.info(peers)
+    await WIREGUARD_CONFIG.update(peers)
 
 
 class CreateResponse(BaseModel):
-    uuid: str
+    address: str
 
 
 @router.post("/create", summary="creates new peer")
 async def create_peer(uuid: str) -> CreateResponse:
+    addresses = []
     peers = await Peer.all().to_list()
-    address = generate_peer_address(taken_addresses=[peer.address for peer in peers])
+    for _peer in peers:
+        if _peer.uuid == uuid:
+            raise HTTPException(
+                status_code=HTTPStatus.CONFLICT, detail="peer with this uuid already exists"
+            )
+        addresses.append(_peer.address)
+
+    address = generate_peer_address(taken_addresses=addresses)
     if not address:
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="no free addresses left")
 
     peer = Peer(uuid=uuid, address=address)
     await peer.insert()
-    wireguard_config.update(await Peer.all().to_list())
 
-    return CreateResponse(uuid=peer.uuid)
+    await update_wg_config()
 
-
-class ConfigResponse(BaseModel):
-    config: str
+    return CreateResponse(address=peer.address)
 
 
-@router.get("/peer/{uuid}/config", summary="returns peer wireguard config")
-async def peer_config(uuid: str) -> ConfigResponse:
+@router.get("/{uuid}/config", summary="returns peer wireguard config")
+async def peer_config(uuid: str) -> PlainTextResponse:
     peer = await Peer.find_one(Peer.uuid == uuid)
     if peer is None:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="peer not found")
+        raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
 
-    config = wireguard_config.get_peer_config(peer)
-    return ConfigResponse(config=config)
+    config = WIREGUARD_CONFIG.generate_peer_config(peer)
+    return PlainTextResponse(config)
 
 
-@router.get("/peer/{uuid}/stats", summary="returns peer statistics")
+@router.get("/{uuid}/stats", summary="returns peer statistics")
 async def peer_stats(uuid: str):
     pass
 
 
-@router.put("/peer/{uuid}", summary="enables or disables peer")
-async def peer_update(enabled: bool):
-    pass
+class PeerUpdateResponse(BaseModel):
+    enabled: bool
 
 
-@router.delete("/peer/{uuid}", summary="permanently deletes peer")
-async def peer_delete(uuid: str):
-    pass
+@router.put("/{uuid}", summary="enables or disables peer")
+async def peer_update(uuid: str, enabled: bool) -> PeerUpdateResponse:
+    peer = await Peer.find_one(Peer.uuid == uuid)
+    if peer is None:
+        raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
+
+    await peer.set({Peer.enabled: enabled})  # noqa
+
+    await WIREGUARD_CONFIG.update()
+
+    return PeerUpdateResponse(enabled=peer.enabled)
+
+
+class PeerDeleteResponse(BaseModel):
+    uuid: str
+
+
+@router.delete("/{uuid}", summary="permanently deletes peer")
+async def peer_delete(uuid: str) -> PeerDeleteResponse:
+    peer = await Peer.find_one(Peer.uuid == uuid)
+    if peer is None:
+        raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
+    await peer.delete()
+
+    await WIREGUARD_CONFIG.update()
+
+    return PeerDeleteResponse(uuid=peer.uuid)

@@ -1,8 +1,6 @@
 from fastapi import Header, HTTPException
 from typing_extensions import Annotated
 
-from wg_node.config import config
-
 
 async def verify_key(x_api_key: Annotated[str, Header()]):
     if x_api_key != "fake-super-secret-key":

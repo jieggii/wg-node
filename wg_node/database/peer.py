@@ -1,13 +1,15 @@
 from datetime import datetime
 
-from beanie import Document
+import pymongo
+from beanie import Document, Indexed
 from pydantic import Field, root_validator
 
 from wg_node.wireguard.key import generate_keypair, generate_preshared_key
 
 
 class Peer(Document):
-    uuid: str
+    uuid: Indexed(str, index_type=pymongo.TEXT, unique=True)
+    # address: Indexed(str, index_type=pymongo.TEXT, unique=True)
     address: str
 
     private_key: str
@@ -27,5 +29,8 @@ class Peer(Document):
         values["private_key"], values["public_key"] = generate_keypair()
         return values
 
-    def __str__(self):
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def __str__(self) -> str:
         return f"Peer<uuid={self.uuid}>"
