@@ -9,8 +9,8 @@ class Config(_Config):
     class Node(_Config):
         _prefix_ = "NODE"
 
-        # secret key which is used to authorize every API call
-        SECRET_KEY = field()
+        # file which contains master's public keys
+        MASTER_PUBLIC_KEYS_FILE = field()
 
     class Wireguard(_Config):
         _prefix_ = "WIREGUARD"
@@ -26,8 +26,8 @@ class Config(_Config):
 
         HOST = field()
         PORT = field(caster=to_int)
-        USER = field()
-        PASSWORD = field()
+        USERNAME_FILE = field()
+        PASSWORD_FILE = field()
         DATABASE = field()
 
 

@@ -1,0 +1,66 @@
+services:
+  wg-node:
+    container_name: wg-node
+    build: ./
+    environment:
+      NODE_MASTER_PUBLIC_KEYS_FILE: /run/secrets/node_master_public_keys
+
+      MONGO_HOST: wg-node-mongodb
+      MONGO_PORT: 27017
+      MONGO_USERNAME_FILE: /run/secrets/mongo_initdb_root_username
+      MONGO_PASSWORD_FILE: /run/secrets/mongo_initdb_root_password
+      MONGO_DATABASE: wg-node
+
+      WIREGUARD_HOSTNAME: a.a.a.a  # public hostname of the server
+      WIREGUARD_PORT: 51820        # public UDP port being listened on the server (it should be exposed)
+
+      # Optional:
+      # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
+      # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
+      # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
+      # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
+
+    volumes:
+      - /etc/wg-node/:/etc/wg-node/
+
+    ports:
+      - "51820:51820/udp"  # Wireguard UDP port
+      - "51821:51821/tcp"  # Wireguard TCP port
+      - "80:8080"          # webserver HTTP port
+
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    secrets:
+      - node_master_public_keys
+      - mongo_initdb_root_username
+      - mongo_initdb_root_password
+
+  mongodb:
+    image: mongo
+    container_name: wg-node-mongodb
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongo_initdb_root_username
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo_initdb_root_password
+    volumes:
+      - ./.mongo-data:/data/db
+    secrets:
+      - mongo_initdb_root_username
+      - mongo_initdb_root_password
+    ports:
+      - "27017:27017"
+
+secrets:
+  node_master_public_keys:
+    file: ./secrets/node_master_public_keys
+
+  mongo_initdb_root_username:
+    file: ./secrets/mongo_initdb_root_username
+
+  mongo_initdb_root_password:
+    file: ./secrets/mongo_initdb_root_password

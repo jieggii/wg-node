@@ -1,4 +1,4 @@
-from wg_node.util import execute
+from wg_node.util import execute, remove_newline_end
 
 # This module simply uses `wg` binary instead of generating keys manually.
 # There are couple reasons for that:
@@ -9,18 +9,14 @@ from wg_node.util import execute
 #    additional configurations, what will increase build time and image size.
 
 
-def _remove_newline_end(key: str):
-    return key.replace("\n", "")
-
-
 def generate_keypair() -> (str, str):
     """Generates keypair (private and matching public key)"""
-    private_key = _remove_newline_end(execute(f"wg genkey"))
-    public_key = _remove_newline_end(execute(f"echo {private_key} | wg pubkey"))
+    private_key = remove_newline_end(execute(f"wg genkey"))
+    public_key = remove_newline_end(execute(f"echo {private_key} | wg pubkey"))
 
     return private_key, public_key
 
 
 def generate_preshared_key() -> str:
     """Generates preshared key"""
-    return _remove_newline_end(execute(f"wg genkey"))
+    return remove_newline_end(execute(f"wg genkey"))
