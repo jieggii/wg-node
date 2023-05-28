@@ -13,3 +13,4 @@ __pycache__/
 # Other
 .mongo-data/
 secrets/
+.env
