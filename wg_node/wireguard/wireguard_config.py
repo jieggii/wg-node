@@ -11,7 +11,7 @@ from wg_node.wireguard.key_storage import KeyStorage
 # mostly because they are not meant to be changed and also to prevent confusion
 _SERVER_INTERFACE_ADDRESS = "10.0.0.1/16"
 _SERVER_INTERFACE_LISTEN_PORT = 51820
-_SERVER_DEVICE = "eth0"
+_SERVER_INTERFACE_DEVICE = "eth0"
 
 _PEER_INTERFACE_ADDRESS_PATTERN = "10.0.x.y/16"
 _PEER_PERSISTENT_KEEPALIVE = 0
@@ -61,9 +61,6 @@ class WireguardConfig:
 PrivateKey = {self._private_key}
 Address = {_SERVER_INTERFACE_ADDRESS}
 ListenPort = {_SERVER_INTERFACE_LISTEN_PORT}
-PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
 """
         for i, peer in enumerate(peers):
             if peer.enabled:
@@ -72,8 +69,9 @@ PostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACC
 [Peer]
 PublicKey = {peer.public_key}
 PresharedKey = {peer.preshared_key}
-AllowedIPs = 0.0.0.0/0, ::/0
+AllowedIPs = {peer.address}
 """
+        print(content, flush=True)
         return content
 
     def generate_peer_config(self, peer: Peer) -> str:

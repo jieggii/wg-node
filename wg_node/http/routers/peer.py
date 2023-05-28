@@ -8,8 +8,9 @@ from pydantic import BaseModel
 
 from wg_node.database import Peer
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_peer_address
+from wg_node.wireguard.wireguard_daemon import sync_with_config
 
-from wg_node.http.dependencies import verify_key
+# from wg_node.http.dependencies import verify_key
 router = APIRouter(prefix="/peer")
 
 loop = asyncio.get_running_loop()
@@ -19,6 +20,8 @@ async def update_wg_config() -> None:
     peers = await Peer.all().to_list()
     logger.info(peers)
     await WIREGUARD_CONFIG.update(peers)
+    sync_with_config()
+    logger.info("Fully updated wireguard config")
 
 
 class CreateResponse(BaseModel):
