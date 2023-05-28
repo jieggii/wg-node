@@ -1,15 +1,15 @@
-from typing import NoReturn
+import os
 
-from os import path
+from typing import NoReturn
 
 
 _SECRETS_DIR = "/run/secrets"
 
 
 def read_docker_secret(filename: str) -> str | NoReturn:
-    filepath = path.join(_SECRETS_DIR, filename)
+    path = os.path.join(_SECRETS_DIR, filename)
     try:
-        with open(filepath, "r", encoding="utf-8") as file:
+        with open(path, "r", encoding="utf-8") as file:
             content = file.read().strip()
             if not content:
                 # todo: is RuntimeError is suitable exception class for this case?
