@@ -15,7 +15,7 @@ class KeyStorage:
     def exists(self):
         return self._path.exists()
 
-    def _store(self, private_key: str, public_key: str):
+    def _store(self, private_key: str, public_key: str) -> None:
         """
         Stores private and public key in file (self._path)
         Note: can be called only once for one storage path, raises FileExistsError
@@ -27,7 +27,7 @@ class KeyStorage:
         with open(self._path, "x", encoding="utf-8") as file:
             json.dump({"private_key": private_key, "public_key": public_key}, file, indent=4)
 
-    def generate_and_store_keys(self):
+    def generate_and_store_keys(self) -> None:
         private_key, public_key = generate_keypair()
         self._store(private_key, public_key)
 

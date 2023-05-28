@@ -1,7 +1,5 @@
 import os
-
 from typing import NoReturn
-
 
 _SECRETS_DIR = "/run/secrets"
 

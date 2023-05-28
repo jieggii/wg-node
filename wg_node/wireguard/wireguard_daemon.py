@@ -9,4 +9,3 @@ def init_wireguard_daemon():
     # execute("wg-quick down wg0")
     execute("wg-quick up wg0")
     sync_with_config()
-

@@ -1,9 +1,9 @@
 from wg_node.config import config
 from wg_node.database import Peer
 from wg_node.database.init import init_database
+from wg_node.docker_secrets import read_docker_secret
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
 from wg_node.wireguard.wireguard_daemon import init_wireguard_daemon
-from wg_node.docker_secrets import read_docker_secret
 
 
 async def init_app() -> None:
@@ -12,7 +12,6 @@ async def init_app() -> None:
     (initializes database, creates Wireguard config file and brings up the Wireguard interface)
     """
     # initialize database
-
     await init_database(
         host=config.Mongo.HOST,
         port=config.Mongo.PORT,
