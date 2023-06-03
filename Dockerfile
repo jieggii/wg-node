@@ -1,11 +1,10 @@
-# BUILD stage:
+# 1. BUILD stage:
 FROM python:3.11 as builder
 
 WORKDIR /wg-node-build
 
-# install pdm
-RUN pip install -U pip setuptools wheel
-RUN pip install pdm
+# install pdm (https://github.com/pdm-project/pdm)
+RUN pip install -U pip setuptools wheel pdm
 
 # copy project files
 COPY pyproject.toml pdm.lock* ./
@@ -20,9 +19,10 @@ FROM python:3.11-alpine as runner
 WORKDIR /wg-node
 
 # retrieve packages from build stage
-COPY --from=builder /wg-node-build/__pypackages__/3.11/lib ./lib/
-ENV PYTHONPATH=/wg-node/lib
+COPY --from=builder /wg-node-build/__pypackages__/3.11/lib ./packages/
+ENV PYTHONPATH=/wg-node/packages
 
+# install necessary packages
 RUN apk add -U --no-cache wireguard-tools dumb-init
 
 EXPOSE 51820/udp
