@@ -10,9 +10,7 @@ def remove_newline_end(key: str) -> str:
 
 def execute(command: str) -> str | NoReturn:
     try:
-        result = subprocess.run(
-            command, shell=True, check=True, timeout=5, capture_output=True, text=True
-        )
+        result = subprocess.run(command, shell=True, check=True, timeout=5, capture_output=True, text=True)
         logger.info(f"exec ${command} -> {result.stdout}")
         return result.stdout
 

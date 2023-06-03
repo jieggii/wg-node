@@ -1,8 +1,8 @@
 from wg_node.config import config
-from wg_node.database import init_database, get_all_peers
+from wg_node.database import get_all_peers, init_database
 from wg_node.docker_secrets import read_docker_secret
-from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
 from wg_node.util import execute
+from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
 
 
 async def init_app() -> None:

@@ -5,9 +5,9 @@ from loguru import logger
 
 from wg_node.config import config
 from wg_node.database import Peer
-from wg_node.wireguard.key_storage import KeyStorage
 from wg_node.util import execute
 from wg_node.wireguard.key import generate_keypair
+from wg_node.wireguard.key_storage import KeyStorage
 
 # These constants are defined here and not in any other place (e.g. not in ENV variables)
 # mostly because they are not meant to be changed and also to prevent confusion
@@ -118,6 +118,4 @@ if not _key_storage.exists():
 
 # initialize wireguard config
 _private_key, _public_key = _key_storage.read_keys()
-WIREGUARD_CONFIG = WireguardConfig(
-    path=_WG_CONFIG_PATH, private_key=_private_key, public_key=_public_key
-)
+WIREGUARD_CONFIG = WireguardConfig(path=_WG_CONFIG_PATH, private_key=_private_key, public_key=_public_key)

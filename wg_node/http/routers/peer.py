@@ -32,9 +32,7 @@ async def create_peer(uuid: str) -> CreateResponse:
     peers = await Peer.all().to_list()
     for _peer in peers:
         if _peer.uuid == uuid:
-            raise HTTPException(
-                status_code=HTTPStatus.CONFLICT, detail="peer with this uuid already exists"
-            )
+            raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="peer with this uuid already exists")
         addresses.append(_peer.address)
 
     address = generate_peer_address(taken_addresses=addresses)

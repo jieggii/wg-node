@@ -6,6 +6,7 @@ from .key import generate_keypair
 
 class KeyStorage:
     """KeyStorage manages Wireguard server key storage file (private and public keys)"""
+
     _path: pathlib.PosixPath
 
     def __init__(self, path: str):
