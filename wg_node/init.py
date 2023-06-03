@@ -1,9 +1,8 @@
 from wg_node.config import config
-from wg_node.database import Peer
-from wg_node.database.init import init_database
+from wg_node.database import init_database, get_all_peers
 from wg_node.docker_secrets import read_docker_secret
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
-from wg_node.wireguard.wireguard_daemon import init_wireguard_daemon
+from wg_node.util import execute
 
 
 async def init_app() -> None:
@@ -20,9 +19,10 @@ async def init_app() -> None:
         database=config.Mongo.DATABASE,
     )
 
-    # generate and write Wireguard config file
-    peers = await Peer.all().to_list()
-    await WIREGUARD_CONFIG.update(peers)
+    # generate, write and sync Wireguard config
+    peers = await get_all_peers()
+    content = WIREGUARD_CONFIG.generate_config_content(peers)
+    await WIREGUARD_CONFIG.write(content)
 
-    # initialize Wireguard
-    init_wireguard_daemon()
+    execute("wg-quick up wg0")
+    WIREGUARD_CONFIG.sync()

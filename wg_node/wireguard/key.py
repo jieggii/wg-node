@@ -12,13 +12,12 @@ b) Even if there is a proper way (it has to be, but it will take some time to fi
 
 
 def generate_keypair() -> (str, str):
-    """Generates keypair (private and matching public key)"""
+    """Generates keypair (private and matching public key)."""
     private_key = remove_newline_end(execute(f"wg genkey"))
     public_key = remove_newline_end(execute(f"echo {private_key} | wg pubkey"))
-
     return private_key, public_key
 
 
 def generate_preshared_key() -> str:
-    """Generates preshared key"""
+    """Generates preshared key."""
     return remove_newline_end(execute(f"wg genkey"))

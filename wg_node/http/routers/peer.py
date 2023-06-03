@@ -2,15 +2,13 @@ import asyncio
 from http import HTTPStatus
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import PlainTextResponse
 from loguru import logger
 from pydantic import BaseModel
 
 from wg_node.database import Peer
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_peer_address
-from wg_node.wireguard.wireguard_daemon import sync_with_config
 
-# from wg_node.http.dependencies import verify_key
 router = APIRouter(prefix="/peer")
 
 loop = asyncio.get_running_loop()
@@ -18,10 +16,10 @@ loop = asyncio.get_running_loop()
 
 async def update_wg_config() -> None:
     peers = await Peer.all().to_list()
-    logger.info(peers)
-    await WIREGUARD_CONFIG.update(peers)
-    sync_with_config()
-    logger.info("Fully updated wireguard config")
+    content = WIREGUARD_CONFIG.generate_config_content(peers)
+    await WIREGUARD_CONFIG.write(content)
+    WIREGUARD_CONFIG.sync()
+    logger.info("regenerated and synced Wireguard config")
 
 
 class CreateResponse(BaseModel):
@@ -59,11 +57,6 @@ async def peer_config(uuid: str) -> PlainTextResponse:
 
     config = WIREGUARD_CONFIG.generate_peer_config(peer)
     return PlainTextResponse(config)
-
-
-@router.get("/{uuid}/stats", summary="returns peer statistics")
-async def peer_stats(uuid: str):
-    pass
 
 
 class PeerUpdateResponse(BaseModel):
