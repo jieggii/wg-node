@@ -26,7 +26,8 @@ class Peer(Document):
     @root_validator(pre=True)
     def generate_peer_keypair(cls, values):  # noqa
         """This root validator is required to generate peer's private and public keys"""
-        values["private_key"], values["public_key"] = generate_keypair()
+        if not values.get("private_key") and not values.get("public_key"):
+            values["private_key"], values["public_key"] = generate_keypair()
         return values
 
     def __repr__(self) -> str:
