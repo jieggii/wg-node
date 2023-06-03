@@ -14,8 +14,9 @@ class NodeStatusResponse(BaseModel):
 
 @router.get("/status", summary="returns node statistics")
 async def stats():
-    enabled_peers = await Peer.find_all(Peer.enabled == True).count()  # noqa
-    disabled_peers = await Peer.find_all(Peer.enabled == False).count()  # noqa
+    enabled_peers = await Peer.find(Peer.enabled == True).count()  # noqa
+    disabled_peers = await Peer.find(Peer.enabled == False).count()  # noqa
+
     return NodeStatusResponse(
-        peers_count=enabled_peers + disabled_peers, enabled_peers=enabled_peers, disabled_peers=disabled_peers
+        peers_count=enabled_peers + disabled_peers, enabled_peers_count=enabled_peers, disabled_peers_count=disabled_peers
     )
