@@ -31,7 +31,6 @@ async def init_app() -> None:
 
     enabled_peers_count = await Peer.find(Peer.enabled == True).count()  # noqa
     peers_count = await Peer.all().count()
-
     logger.info(
         f"successfully started wg-node. Peers count: {peers_count} ({enabled_peers_count} enabled)",
     )

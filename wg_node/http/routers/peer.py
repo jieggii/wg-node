@@ -9,6 +9,8 @@ from pydantic import BaseModel
 from wg_node.database import Peer
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_peer_address
 
+from wg_node.http import dependencies
+
 router = APIRouter(prefix="/peer")
 
 loop = asyncio.get_running_loop()
@@ -41,7 +43,6 @@ async def create_peer(uuid: str) -> CreateResponse:
 
     peer = Peer(uuid=uuid, address=address)
     await peer.insert()
-
     await update_wg_config()
 
     return CreateResponse(address=peer.address)
@@ -68,8 +69,7 @@ async def peer_update(uuid: str, enabled: bool) -> PeerUpdateResponse:
         raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
 
     await peer.set({Peer.enabled: enabled})  # noqa
-
-    await WIREGUARD_CONFIG.update()
+    await update_wg_config()
 
     return PeerUpdateResponse(enabled=peer.enabled)
 
@@ -84,7 +84,5 @@ async def peer_delete(uuid: str) -> PeerDeleteResponse:
     if peer is None:
         raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
     await peer.delete()
-
-    await WIREGUARD_CONFIG.update()
-
+    await update_wg_config()
     return PeerDeleteResponse(uuid=peer.uuid)

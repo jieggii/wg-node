@@ -1,8 +1,6 @@
 import json
 import pathlib
 
-from .key import generate_keypair
-
 
 class KeyStorage:
     """KeyStorage manages Wireguard server key storage file (private and public keys)"""

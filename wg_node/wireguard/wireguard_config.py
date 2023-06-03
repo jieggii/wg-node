@@ -26,7 +26,7 @@ _PEER_DNS = "1.1.1.1, 8.8.8.8"
 
 
 def generate_peer_address(taken_addresses: list[str]) -> str | None:
-    """Generates free IP address for a new peer"""
+    """Generates free IP address for a new peer."""
 
     # adding server address to list of taken addresses 'cause it cannot be used for new peer
     taken_addresses.append(_SERVER_INTERFACE_ADDRESS)
@@ -55,7 +55,7 @@ class WireguardConfig:
         self._public_key = public_key
 
     async def write(self, content: str):
-        """Asynchronously writes content to the config file"""
+        """Asynchronously writes content to the config file."""
 
         async with async_open(self._path, "w") as file:
             await file.write(content)
@@ -105,17 +105,20 @@ PersistentKeepalive = {_PEER_PERSISTENT_KEEPALIVE}
 
     @staticmethod
     def sync():
-        """Synchronizes Wireguard config"""
+        """Synchronizes Wireguard config."""
         execute("wg syncconf wg0 <(wg-quick strip wg0)")
 
 
 # initialize server key storage
 _key_storage = KeyStorage(path=_KEY_STORAGE_PATH)
+_private_key, _public_key = None, None
+
 if not _key_storage.exists():
-    private_key, public_key = generate_keypair()
-    _key_storage.store_keys(private_key=private_key, public_key=public_key)
-    logger.info("generated and stored server public keys")
+    _private_key, _public_key = generate_keypair()
+    _key_storage.store_keys(private_key=_private_key, public_key=_public_key)
+    logger.info(f"generated and stored server keypair")
 
 # initialize wireguard config
-_private_key, _public_key = _key_storage.read_keys()
+if not _private_key or not _public_key:
+    _private_key, _public_key = _key_storage.read_keys()
 WIREGUARD_CONFIG = WireguardConfig(path=_WG_CONFIG_PATH, private_key=_private_key, public_key=_public_key)

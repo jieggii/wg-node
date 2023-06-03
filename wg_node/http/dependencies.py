@@ -1,11 +1,14 @@
 from fastapi import Header, HTTPException
 from typing_extensions import Annotated
 
-# from wg_node.config import config
 from wg_node.docker_secrets import read_docker_secret
 
 # read node master's public keys from the docker secret file
 master_public_keys = read_docker_secret("node_master_public_keys").split("\n")
+if not master_public_keys:
+    raise RuntimeError(
+        "no node master's public keys indicated in the `node_master_public_keys` docker secret",
+    )
 
 
 async def verify_key(x_api_key: Annotated[str, Header()]):
