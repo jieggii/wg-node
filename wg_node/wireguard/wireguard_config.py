@@ -14,11 +14,11 @@ from wg_node.wireguard.key_storage import KeyStorage
 _KEY_STORAGE_PATH = "/etc/wg-node/server-keys.json"
 _WG_CONFIG_PATH = "/etc/wireguard/wg0.conf"
 
-_SERVER_INTERFACE_ADDRESS = "10.0.0.1"
-_SERVER_INTERFACE_LISTEN_PORT = 51820
-# _SERVER_INTERFACE_DEVICE = "eth0"
+_WG_BASE_ADDRESS = "10.0.0.x"
 
-_PEER_INTERFACE_ADDRESS_PATTERN = "10.0.0.x"
+_SERVER_INTERFACE_ADDRESS = _WG_BASE_ADDRESS.replace("x", str(1))
+_SERVER_INTERFACE_LISTEN_PORT = 51820
+
 _PEER_PERSISTENT_KEEPALIVE = 0
 _PEER_DNS = "1.1.1.1, 8.8.8.8"
 
@@ -29,8 +29,8 @@ def generate_peer_address(taken_addresses: list[str]) -> str | None:
     # adding server address to list of taken addresses 'cause it cannot be used for new peer
     taken_addresses.append(_SERVER_INTERFACE_ADDRESS)
 
-    for x in range(1, 255):  # todo: is it correct (optimal) range?
-        address = _PEER_INTERFACE_ADDRESS_PATTERN.replace("x", str(x))
+    for x in range(2, 255):
+        address = _WG_BASE_ADDRESS.replace("x", str(x))
         if address not in taken_addresses:
             return address
     return None
@@ -68,7 +68,7 @@ Address = {_SERVER_INTERFACE_ADDRESS}/24
 ListenPort = {_SERVER_INTERFACE_LISTEN_PORT}
 
 PreUp =
-PostUp =  iptables -t nat -A POSTROUTING -s {_SERVER_INTERFACE_ADDRESS}/24 -o eth0 -j MASQUERADE; iptables -A INPUT -p udp -m udp --dport 51820 -j ACCEPT; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT;
+PostUp =  iptables -t nat -A POSTROUTING -s {_WG_BASE_ADDRESS.replace("x", "0")}/24 -o eth0 -j MASQUERADE; iptables -A INPUT -p udp -m udp --dport 51820 -j ACCEPT; iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT;
 PreDown =
 PostDown =
 """
