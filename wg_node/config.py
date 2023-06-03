@@ -16,10 +16,10 @@ class Config(_Config):
         _prefix_ = "WIREGUARD"
 
         # public hostname of the server
-        HOSTNAME = field()
+        PUBLIC_HOSTNAME = field()
 
         # public UDP port being listened on the server
-        PORT = field(caster=to_int)
+        PUBLIC_PORT = field(caster=to_int)
 
     class Mongo(_Config):
         _prefix_ = "MONGO"
