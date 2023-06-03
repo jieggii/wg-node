@@ -1,1 +1,4 @@
-wg-node - quickly deploy your Wireguard node using docker and manage it easily through REST API.
+# wg-node
+Deploy and manage your Wireguard nodes with one hand! 
+
+(Work in progress)
