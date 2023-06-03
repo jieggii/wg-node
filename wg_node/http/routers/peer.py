@@ -9,8 +9,6 @@ from pydantic import BaseModel
 from wg_node.database import Peer
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_peer_address
 
-from wg_node.http import dependencies
-
 router = APIRouter(prefix="/peer")
 
 loop = asyncio.get_running_loop()
@@ -28,12 +26,16 @@ class CreateResponse(BaseModel):
     address: str
 
 
+class CreateParams(BaseModel):
+    uuid: str
+
+
 @router.post("/create", summary="creates new peer")
-async def create_peer(uuid: str) -> CreateResponse:
+async def create_peer(body: CreateParams) -> CreateResponse:
     addresses = []
     peers = await Peer.all().to_list()
     for _peer in peers:
-        if _peer.uuid == uuid:
+        if _peer.uuid == body.uuid:
             raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="peer with this uuid already exists")
         addresses.append(_peer.address)
 
@@ -41,7 +43,7 @@ async def create_peer(uuid: str) -> CreateResponse:
     if not address:
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="no free addresses left")
 
-    peer = Peer(uuid=uuid, address=address)
+    peer = Peer(uuid=body.uuid, address=address)
     await peer.insert()
     await update_wg_config()
 
