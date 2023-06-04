@@ -33,7 +33,7 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
 
     secrets:
-      - node_master_public_keys
+      - node_clients_public_keys
       - mongo_initdb_root_username
       - mongo_initdb_root_password
 
@@ -56,8 +56,8 @@ services:
       - "27017:27017"
 
 secrets:
-  node_master_public_keys:
-    file: ./.secrets/node_master_public_keys
+  node_clients_public_keys:
+    file: .secrets/node_clients_public_keys
 
   mongo_initdb_root_username:
     file: ./.secrets/mongo_initdb_root_username
