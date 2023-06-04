@@ -23,11 +23,11 @@ def _normalize_dict(obj: dict) -> bytes:
 
 
 async def authenticate_client(
-    request: Request,
-    request_params_signature: Annotated[
-        str, Header(alias="Request-Params-Signature", title="Signature of the request parameters")
-    ],
-    client_public_key: Annotated[bytes, Header(alias="Client-Public-Key", title="Public key of the client")],
+        request: Request,
+        request_params_signature: Annotated[
+            str, Header(alias="Request-Params-Signature", title="Signature of the request parameters")
+        ],
+        client_public_key: Annotated[bytes, Header(alias="Client-Public-Key", title="Public key of the client")],
 ):
     """
     Authenticates client:
@@ -45,13 +45,13 @@ async def authenticate_client(
     query_params = dict(request.query_params)
     body = await request.json()
 
-    # converting path params, query params and body to normalized json bytes
+    # converting path params, query params and request body to normalized json bytes
     # e.g. {"foo": "bar", "x": "y"} -> b'{"foo":"bar","x":"y"}'
     path_params_bytes = _normalize_dict(path_params)
     query_params_bytes = _normalize_dict(query_params)
     body_bytes = _normalize_dict(body)
 
-    # signed bytes are concatenation of path params, query params and body
+    # signed bytes are concatenation of path params, query params and request body
     signed_bytes = path_params_bytes + query_params_bytes + body_bytes
 
     try:
@@ -63,4 +63,4 @@ async def authenticate_client(
             ),
         )
     except rsa.VerificationError:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="invalid Request-Params-Signature header")
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="invalid request signature")
