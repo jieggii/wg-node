@@ -1,10 +1,10 @@
 import asyncio
 
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 
+from wg_node.http.dependencies import authenticate_client
 from wg_node.http.routers import node, peer
 from wg_node.init import init_app
-from wg_node.http.dependencies import authenticate_client
 
 # perform necessary initialization operations
 loop = asyncio.get_running_loop()
@@ -23,7 +23,7 @@ init_task.add_done_callback(check_init_task_exception)
 app = FastAPI(
     title="wg-node",
     description="Deploy and manage your Wireguard nodes with one hand!",
-    dependencies=[Depends(authenticate_client)]
+    dependencies=[Depends(authenticate_client)],
 )
 app.include_router(node.router)
 app.include_router(peer.router)

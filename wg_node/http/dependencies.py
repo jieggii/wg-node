@@ -1,11 +1,10 @@
 import json
+from http import HTTPStatus
 
 import rsa
-
-from http import HTTPStatus
 from fastapi import Header, HTTPException, Request
-from typing_extensions import Annotated
 from loguru import logger
+from typing_extensions import Annotated
 
 from wg_node.docker_secrets import read_node_clients_public_keys
 
@@ -20,19 +19,15 @@ def _normalize_dict(obj: dict) -> bytes:
     >>> _normalize_dict({"foo": "bar", "x": "y"})
     >>> b'{"foo":"bar","x":"y"}'
     """
-    return json.dumps(
-        obj, separators=(",", ":"), sort_keys=False
-    ).encode()
+    return json.dumps(obj, separators=(",", ":"), sort_keys=False).encode()
 
 
 async def authenticate_client(
-        request: Request,
-        request_params_signature: Annotated[
-            str, Header(alias="Request-Params-Signature", title="Signature of the request parameters")
-        ],
-        client_public_key: Annotated[
-            bytes, Header(alias="Client-Public-Key", title="Public key of the client")
-        ]
+    request: Request,
+    request_params_signature: Annotated[
+        str, Header(alias="Request-Params-Signature", title="Signature of the request parameters")
+    ],
+    client_public_key: Annotated[bytes, Header(alias="Client-Public-Key", title="Public key of the client")],
 ):
     """
     Authenticates client:
@@ -44,9 +39,7 @@ async def authenticate_client(
     # only in performance purposes, so we don't need to try verifying request params signature
     # with all stored clients public keys
     if client_public_key not in node_clients_public_keys:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST, detail="unknown client public key"
-        )
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="unknown client public key")
 
     path_params = request.path_params
     query_params = dict(request.query_params)
@@ -70,6 +63,4 @@ async def authenticate_client(
             ),
         )
     except rsa.VerificationError:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST, detail="invalid Request-Params-Signature header"
-        )
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="invalid Request-Params-Signature header")

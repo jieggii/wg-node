@@ -19,12 +19,13 @@ async def status() -> NodeStatusResponse:
     return NodeStatusResponse(
         peers_count=enabled_peers + disabled_peers,
         enabled_peers_count=enabled_peers,
-        disabled_peers_count=disabled_peers
+        disabled_peers_count=disabled_peers,
     )
 
 
 class NodeWipeResponse(BaseModel):
     peers_count: int
+
 
 @router.get("/wipe", summary="permanently deletes all peers")
 async def wipe() -> NodeWipeResponse:

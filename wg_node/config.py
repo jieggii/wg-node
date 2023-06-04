@@ -10,6 +10,7 @@ class Config(_Config):
     Config is an interface for accessing configuration that was provided through
     environmental variables.
     """
+
     class Node(_Config):
         _prefix_ = "NODE"
 
