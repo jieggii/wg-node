@@ -31,7 +31,7 @@ async def authenticate_client(
 ):
     """
     Authenticates client:
-    - Validates that client public key (from Client-Public-Key header) is known
+    - Ensures that client public key (from Client-Public-Key header) is known
     - Validates request params signature (which is indicated in Request-Params-Signature header)
     """
 
