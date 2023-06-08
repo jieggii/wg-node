@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 from wg_node.database import Peer
 
-router = APIRouter(prefix="")
+router = APIRouter(prefix="/node")
 
 
 class NodeStatusResponse(BaseModel):
@@ -16,6 +16,7 @@ class NodeStatusResponse(BaseModel):
 async def status() -> NodeStatusResponse:
     enabled_peers = await Peer.find(Peer.enabled == True).count()  # noqa
     disabled_peers = await Peer.find(Peer.enabled == False).count()  # noqa
+
     return NodeStatusResponse(
         peers_count=enabled_peers + disabled_peers,
         enabled_peers_count=enabled_peers,
@@ -27,7 +28,6 @@ class NodeWipeResponse(BaseModel):
     peers_count: int
 
 
-@router.get("/wipe", summary="permanently deletes all peers")
+@router.post("/wipe", summary="permanently deletes all peers")
 async def wipe() -> NodeWipeResponse:
-    # todo
     ...

@@ -22,16 +22,16 @@ async def update_wg_config() -> None:
     logger.info("regenerated and synced Wireguard config")
 
 
-class CreateResponse(BaseModel):
+class PeerCreateResponse(BaseModel):
     address: str
 
 
-class CreateParams(BaseModel):
+class PeerCreateParams(BaseModel):
     uuid: str
 
 
 @router.post("/create", summary="creates new peer")
-async def create_peer(body: CreateParams) -> CreateResponse:
+async def create_peer(body: PeerCreateParams) -> PeerCreateResponse:
     addresses = []
     peers = await Peer.all().to_list()
     for _peer in peers:
@@ -47,7 +47,7 @@ async def create_peer(body: CreateParams) -> CreateResponse:
     await peer.insert()
     await update_wg_config()
 
-    return CreateResponse(address=peer.address)
+    return PeerCreateResponse(address=peer.address)
 
 
 @router.get("/{uuid}/config", summary="returns peer wireguard config")

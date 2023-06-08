@@ -25,9 +25,9 @@ def _normalize_dict(obj: dict) -> bytes:
 async def authenticate_client(
         request: Request,
         request_params_signature: Annotated[
-            str, Header(alias="Request-Params-Signature", title="Signature of the request parameters")
+            str, Header(alias="Request-Params-Signature")
         ],
-        client_public_key: Annotated[bytes, Header(alias="Client-Public-Key", title="Public key of the client")],
+        client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
 ):
     """
     Authenticates client:
@@ -59,7 +59,7 @@ async def authenticate_client(
             message=signed_bytes,
             signature=bytes.fromhex(request_params_signature),
             pub_key=rsa.PublicKey.load_pkcs1(
-                b"-----BEGIN RSA PUBLIC KEY-----\n" + client_public_key + b"\n-----END RSA PUBLIC KEY-----"
+                b"-----BEGIN RSA PUBLIC KEY-----\n" + client_public_key.encode() + b"\n-----END RSA PUBLIC KEY-----"
             ),
         )
     except rsa.VerificationError:

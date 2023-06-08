@@ -25,5 +25,5 @@ app = FastAPI(
     description="Deploy and manage your Wireguard nodes with one hand!",
     dependencies=[Depends(authenticate_client)],
 )
-app.include_router(node.router)
-app.include_router(peer.router)
+app.include_router(node.router, tags=["node"])
+app.include_router(peer.router, tags=["peer"])
