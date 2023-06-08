@@ -23,9 +23,9 @@ def _normalize_dict(obj: dict) -> bytes:
 
 
 async def authenticate_client(
-    request: Request,
-    request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
-    client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
+        request: Request,
+        request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
+        client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
 ):
     """
     Authenticates client:
@@ -40,7 +40,19 @@ async def authenticate_client(
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="unknown client public key")
 
     path_params = request.path_params
+
     query_params = dict(request.query_params)
+    # this is very smelly code, I know, that there certainly must be something different...
+    for key, value in query_params.items():
+        if query_params[key] == "True":
+            query_params[key] = True
+        if query_params[key] == "False":
+            query_params[key] = False
+        # try:
+        #     query_params[key] = int(value)
+        # except ValueError:
+        #     continue
+
     body = await request.json()
 
     # converting path params, query params and request body to normalized json bytes
@@ -51,7 +63,6 @@ async def authenticate_client(
 
     # signed bytes are concatenation of path params, query params and request body
     signed_bytes = path_params_bytes + query_params_bytes + body_bytes
-
     try:
         rsa.verify(
             message=signed_bytes,
