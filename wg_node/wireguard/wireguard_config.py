@@ -22,7 +22,7 @@ _SERVER_INTERFACE_ADDRESS = _WG_BASE_ADDRESS.replace("x", str(1))
 _SERVER_INTERFACE_LISTEN_PORT = 51820
 
 _PEER_PERSISTENT_KEEPALIVE = 0
-_PEER_DNS = "1.1.1.1, 8.8.8.8"
+_PEER_DNS = "1.1.1.1"
 
 
 def generate_peer_address(taken_addresses: list[str]) -> str | None:
@@ -56,7 +56,6 @@ class WireguardConfig:
 
     async def write(self, content: str):
         """Asynchronously writes content to the config file."""
-
         async with async_open(self._path, "w") as file:
             await file.write(content)
 

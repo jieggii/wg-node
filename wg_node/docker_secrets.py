@@ -5,12 +5,12 @@ _SECRETS_DIR = "/run/secrets"
 _NODE_ADMIN_PUBLIC_KEYS_DIR = os.path.join(_SECRETS_DIR, "node_clients_public_keys")
 
 
-def _extract_public_key_from_pem(content: str) -> bytes:
+def _extract_public_key_from_pem(content: str) -> str:
     """Extracts public key from string in PEM format."""
     lines = [line for line in content.split("\n") if line]  # skipping empty lines
     if lines[0] != "-----BEGIN RSA PUBLIC KEY-----" or lines[-1] != "-----END RSA PUBLIC KEY-----":
         raise ValueError("invalid PEM content")
-    return "".join(lines[1:-1]).encode()
+    return "".join(lines[1:-1])
 
 
 def read_secret_file(filename: str) -> str | NoReturn:
@@ -28,12 +28,12 @@ def read_secret_file(filename: str) -> str | NoReturn:
         raise FileNotFoundError(f"docker secret file {path} not found")
 
 
-def read_node_clients_public_keys() -> list[bytes]:
+def read_node_clients_public_keys() -> list[str]:
     """
     Reads and returns list of node client public keys
     (from node_client_public_keys docker secret).
     """
-    public_keys: list[bytes] = []
+    public_keys: list[str] = []
     for filename in os.listdir(_NODE_ADMIN_PUBLIC_KEYS_DIR):
         filepath = os.path.join(_NODE_ADMIN_PUBLIC_KEYS_DIR, filename)
         with open(filepath, "r", encoding="utf-8") as file:

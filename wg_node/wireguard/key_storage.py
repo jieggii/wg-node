@@ -3,7 +3,7 @@ import pathlib
 
 
 class KeyStorage:
-    """KeyStorage manages Wireguard server key storage file (private and public keys)"""
+    """KeyStorage manages Wireguard server key storage file (private and public keys)."""
 
     _path: pathlib.PosixPath
 
