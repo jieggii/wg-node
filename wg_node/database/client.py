@@ -1,16 +1,14 @@
 from datetime import datetime
 
-import pymongo
 from beanie import Document, Indexed
 from pydantic import Field, root_validator
 
 from wg_node.wireguard.key import generate_keypair, generate_preshared_key
 
 
-class Peer(Document):
-    uuid: Indexed(str, index_type=pymongo.TEXT, unique=True)
-    # address: Indexed(str, index_type=pymongo.TEXT, unique=True)
-    address: str
+class Client(Document):
+    client_id: Indexed(str, unique=True)
+    address: Indexed(str, unique=True)
 
     private_key: str
     public_key: str
@@ -21,11 +19,14 @@ class Peer(Document):
     enabled: bool = True
 
     class Settings:
-        name = "peers"
+        name = "clients"
 
     @root_validator(pre=True)
     def generate_peer_keypair(cls, values):  # noqa
-        """This root validator is required to generate peer's private and public keys"""
+        """
+        This root validator is required to generate client's private and public keys
+        if they were not provided.
+        """
         if not values.get("private_key") and not values.get("public_key"):
             values["private_key"], values["public_key"] = generate_keypair()
         return values
@@ -34,8 +35,8 @@ class Peer(Document):
         return self.__str__()
 
     def __str__(self) -> str:
-        return f"Peer<uuid={self.uuid}>"
+        return f"Client<uuid={self.uuid}>"
 
 
-async def get_all_peers() -> list[Peer]:
-    return await Peer.all().to_list()
+async def get_all_peers() -> list[Client]:
+    return await Client.all().to_list()

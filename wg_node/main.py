@@ -3,7 +3,7 @@ import asyncio
 from fastapi import Depends, FastAPI
 
 from wg_node.http.dependencies import authenticate_client
-from wg_node.http.routers import node, peer
+from wg_node.http.routers import node, client
 from wg_node.init import init_app
 
 # perform necessary initialization operations
@@ -26,4 +26,4 @@ app = FastAPI(
     dependencies=[Depends(authenticate_client)],
 )
 app.include_router(node.router, tags=["node"])
-app.include_router(peer.router, tags=["peer"])
+app.include_router(client.router, tags=["client"])

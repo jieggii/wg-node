@@ -1,33 +1,32 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from wg_node.database import Peer
+from wg_node.database import Client
 
 router = APIRouter(prefix="/node")
 
 
 class NodeStatusResponse(BaseModel):
-    peers_count: int
-    enabled_peers_count: int
-    disabled_peers_count: int
+    clients_count: int
+    enabled_clients_count: int
 
 
-@router.get("/status", summary="returns node statistics")
+@router.get("/status", summary="returns clients count and active clients count")
 async def status() -> NodeStatusResponse:
-    enabled_peers = await Peer.find(Peer.enabled == True).count()  # noqa
-    disabled_peers = await Peer.find(Peer.enabled == False).count()  # noqa
+    clients_count = await Client.all().count()
+    enabled_clients_count = await Client.find(Client.enabled == True).count()  # noqa
 
     return NodeStatusResponse(
-        peers_count=enabled_peers + disabled_peers,
-        enabled_peers_count=enabled_peers,
-        disabled_peers_count=disabled_peers,
+        clients_count=clients_count,
+        enabled_clients_count=enabled_clients_count,
     )
 
 
 class NodeWipeResponse(BaseModel):
-    peers_count: int
+    clients_deleted: int
 
 
-@router.post("/wipe", summary="permanently deletes all peers")
+@router.post("/wipe", summary="permanently deletes all clients")
 async def wipe() -> NodeWipeResponse:
-    ...
+    # todo
+    return NodeWipeResponse(clients_deleted=-999)

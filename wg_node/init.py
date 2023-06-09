@@ -1,7 +1,7 @@
 from loguru import logger
 
 from wg_node.config import config
-from wg_node.database import Peer, get_all_peers, init_database
+from wg_node.database import Client, get_all_peers, init_database
 from wg_node.docker_secrets import read_secret_file
 from wg_node.util import execute
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
@@ -28,8 +28,8 @@ async def init_app() -> None:
     execute("wg-quick up wg0")
     WIREGUARD_CONFIG.sync()
 
-    enabled_peers_count = await Peer.find(Peer.enabled == True).count()  # noqa
-    peers_count = await Peer.all().count()
+    enabled_peers_count = await Client.find(Client.enabled == True).count()  # noqa
+    peers_count = await Client.all().count()
     logger.info(
         f"successfully started wg-node. Peers count: {peers_count} ({enabled_peers_count} enabled)",
     )
