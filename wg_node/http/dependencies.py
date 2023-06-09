@@ -23,9 +23,9 @@ def _normalize_dict(obj: dict) -> bytes:
 
 
 async def authenticate_client(
-        request: Request,
-        request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
-        client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
+    request: Request,
+    request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
+    client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
 ):
     """
     Authenticates client:

@@ -37,5 +37,6 @@ class Client(Document):
     def __str__(self) -> str:
         return f"Client<uuid={self.uuid}>"
 
+
 # async def get_all_peers() -> list[Client]:
 #     return await Client.all().to_list()

@@ -33,16 +33,12 @@ class ClientCreateParams(BaseModel):
 @router.post("/create", summary="creates new client")
 async def client_create(params: ClientCreateParams) -> ClientCreateResponse:
     if await Client.find(Client.client_id == params.client_id).exists():
-        raise HTTPException(
-            status_code=HTTPStatus.CONFLICT, detail="client with this client_id already exists"
-        )
+        raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="client with this client_id already exists")
 
     taken_addresses = [client.address for client in await Client.all().to_list()]
     address = generate_client_address(taken_addresses)
     if not address:
-        raise HTTPException(
-            status_code=HTTPStatus.CONFLICT, detail="no free client addresses left"
-        )
+        raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="no free client addresses left")
 
     client = Client(client_id=params.client_id, address=address)
     await client.insert()

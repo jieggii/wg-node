@@ -3,7 +3,7 @@ import asyncio
 from fastapi import Depends, FastAPI
 
 from wg_node.http.dependencies import authenticate_client
-from wg_node.http.routers import node, client
+from wg_node.http.routers import client, node
 from wg_node.init import init_app
 
 # perform necessary initialization operations
