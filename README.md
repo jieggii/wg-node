@@ -7,11 +7,12 @@ Run in docker container and manage it effortlessly through HTTP REST API.
 
 ## Regards
 
-The project is mostly inspired by [wg-easy/wg-easy](https://github.com/wg-easy/wg-easy) and
-is very similar to it in some parts.
-But when creating **wg-node** I wanted to have something lighter and safer, something, that can be used
-on multiple servers and with a lot of client peers and something that can be managed from a single machine.
-That's why there is HTTP REST API instead of cute UI and are request signatures.
+> The project is mostly inspired by [wg-easy/wg-easy](https://github.com/wg-easy/wg-easy) and
+> is very similar to it in some parts.
+
+> However, when developing **wg-node** I wanted to create something lighter and safer;
+> something, that can be used on multiple servers and be managed from a single machine.
+> That's why there is HTTP REST API instead of cute UI and are request signatures.
 
 ## Dependencies
 
