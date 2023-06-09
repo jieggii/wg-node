@@ -1,5 +1,5 @@
 services:
-  wg-node:
+  wg-node-app:
     container_name: wg-node-app
     build: ./
     env_file: .env
@@ -37,9 +37,9 @@ services:
       - mongo_initdb_root_username
       - mongo_initdb_root_password
 
-  mongodb:
+  wg-node-mongo:
     image: mongo
-    container_name: wg-node-mongodb
+    container_name: wg-node-mongo
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongo_initdb_root_username
