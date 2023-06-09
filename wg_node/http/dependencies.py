@@ -22,10 +22,10 @@ def _normalize_dict(obj: dict) -> bytes:
     return json.dumps(obj, separators=(",", ":"), sort_keys=False).encode()
 
 
-async def authenticate_client(
-    request: Request,
-    request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
-    client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
+async def verify_request(
+        request: Request,
+        request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
+        client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
 ):
     """
     Authenticates client:
@@ -40,8 +40,8 @@ async def authenticate_client(
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="unknown client public key")
 
     path_params = request.path_params
-
     query_params = dict(request.query_params)
+
     # this is very smelly code, I know, that there certainly must be something different...
     for key, value in query_params.items():
         if query_params[key] == "True":
