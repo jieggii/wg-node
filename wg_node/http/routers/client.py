@@ -15,8 +15,8 @@ loop = asyncio.get_running_loop()
 
 
 async def update_wg_config() -> None:
-    peers = await Client.all().to_list()
-    content = WIREGUARD_CONFIG.generate_config_content(peers)
+    clients = await Client.all().to_list()
+    content = WIREGUARD_CONFIG.generate_config_content(clients)
     await WIREGUARD_CONFIG.write(content)
     WIREGUARD_CONFIG.sync()
     logger.info("regenerated and synced Wireguard config")
@@ -30,7 +30,7 @@ class ClientCreateParams(BaseModel):
     client_id: str
 
 
-@router.post("/create", summary="creates new peer")
+@router.post("/create", summary="creates new client")
 async def client_create(params: ClientCreateParams) -> ClientCreateResponse:
     if await Client.find(Client.client_id == params.client_id).exists():
         raise HTTPException(
@@ -57,7 +57,7 @@ async def client_get_config(client_id: str) -> PlainTextResponse:
     if client is None:
         raise HTTPException(HTTPStatus.NOT_FOUND, "client not found")
 
-    config = WIREGUARD_CONFIG.generate_peer_config(client_id)
+    config = WIREGUARD_CONFIG.generate_client_config(client_id)
     return PlainTextResponse(config)
 
 
@@ -81,8 +81,8 @@ class ClientDeleteResponse(BaseModel):
     client_id: str
 
 
-@router.delete("/{client_id}", summary="permanently deletes peer")
-async def peer_delete(client_id: str) -> ClientDeleteResponse:
+@router.delete("/{client_id}", summary="permanently deletes client")
+async def client_delete(client_id: str) -> ClientDeleteResponse:
     client = await Client.find_one(Client.client_id == client_id)
     if client is None:
         raise HTTPException(HTTPStatus.NOT_FOUND, "client not found")
