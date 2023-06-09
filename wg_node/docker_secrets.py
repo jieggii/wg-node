@@ -15,23 +15,18 @@ def _extract_public_key_from_pem(content: str) -> str:
 
 def read_secret_file(filename: str) -> str | NoReturn:
     """Reads and returns docker secret file."""
-    path = os.path.join(_SECRETS_DIR, filename)
-    try:
-        with open(path, "r", encoding="utf-8") as file:
-            content = file.read().strip()
-            if not content:
-                # todo: is RuntimeError is suitable exception class for this case?
-                raise RuntimeError(f"docker secret file {path} is empty")
-            return content
-
-    except FileNotFoundError:
-        raise FileNotFoundError(f"docker secret file {path} not found")
+    filepath = os.path.join(_SECRETS_DIR, filename)
+    with open(filepath, "r", encoding="utf-8") as file:
+        content = file.read().strip()
+        if not content:
+            raise ValueError(f"docker secret file {filepath} is empty")
+        return content
 
 
 def read_node_clients_public_keys() -> list[str]:
     """
-    Reads and returns list of node client public keys
-    (from node_client_public_keys docker secret).
+    Reads and returns list of node clients' public keys
+    (from the node_client_public_keys docker secret).
     """
     public_keys: list[str] = []
     for filename in os.listdir(_NODE_ADMIN_PUBLIC_KEYS_DIR):
@@ -45,6 +40,6 @@ def read_node_clients_public_keys() -> list[str]:
             public_keys.append(key)
 
     if not public_keys:
-        raise RuntimeError("no node clients keys were specified")  # todo
+        raise ValueError("no node clients' keys were specified")
 
     return public_keys
