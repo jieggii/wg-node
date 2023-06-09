@@ -1,2 +1,2 @@
-from .client import Client, get_all_peers
+from .client import Client
 from .init import init_database
