@@ -26,7 +26,7 @@ class NodeWipeResponse(BaseModel):
     clients_deleted: int
 
 
-@router.post("/wipe", summary="permanently deletes all clients")
+@router.delete("/wipe", summary="permanently deletes all clients")
 async def wipe() -> NodeWipeResponse:
     # todo
     return NodeWipeResponse(clients_deleted=-999)
