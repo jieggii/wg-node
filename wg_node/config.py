@@ -15,7 +15,7 @@ class Config(_Config):
         _prefix_ = "NODE"
 
         # file which contains master's public keys
-        MASTER_PUBLIC_KEYS_FILE = field()
+        CLIENTS_PUBLIC_KEYS_FILE = field()
 
     class Wireguard(_Config):
         _prefix_ = "WIREGUARD"

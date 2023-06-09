@@ -4,7 +4,7 @@ services:
     build: ./
     env_file: .env
     environment:
-      NODE_MASTER_PUBLIC_KEYS_FILE: /run/secrets/node_master_public_keys
+      NODE_CLIENTS_PUBLIC_KEYS_FILE: /run/secrets/node_clients_public_keys
 
       WIREGUARD_PUBLIC_PORT: 51820  # remember to update ports section when updating this env var
 
