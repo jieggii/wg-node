@@ -24,6 +24,9 @@ services:
 
     restart: unless-stopped
 
+    depends_on:
+      - wg-node-mongo
+
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
