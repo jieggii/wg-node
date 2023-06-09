@@ -30,7 +30,7 @@ class ClientCreateParams(BaseModel):
     client_id: str
 
 
-@router.post("/create", summary="creates new client")
+@router.post("/", summary="creates new client")
 async def client_create(params: ClientCreateParams) -> ClientCreateResponse:
     if await Client.find(Client.client_id == params.client_id).exists():
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="client with this client_id already exists")
