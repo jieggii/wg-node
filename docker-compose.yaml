@@ -1,0 +1,70 @@
+services:
+  wg-node-app:
+    container_name: wg-node-app
+    build: ./
+    env_file: .env
+    environment:
+      NODE_CLIENTS_PUBLIC_KEYS_FILE: /run/secrets/node_clients_public_keys
+
+      WIREGUARD_PUBLIC_PORT: 51820  # remember to update ports section when updating this env var
+
+      MONGO_HOST: wg-node-mongo
+      MONGO_PORT: 27017
+      MONGO_USERNAME_FILE: /run/secrets/mongo_initdb_root_username
+      MONGO_PASSWORD_FILE: /run/secrets/mongo_initdb_root_password
+      MONGO_DATABASE: wg-node
+
+    volumes:
+      - /etc/wg-node/:/etc/wg-node/  # wg-node persistent server key storage
+
+    ports:
+      - "51820:51820/udp"  # Wireguard UDP port
+      - "51821:51821/tcp"  # Wireguard TCP port
+      - "80:8080"          # web server HTTP port
+
+    restart: unless-stopped
+
+    depends_on:
+      - wg-node-mongo
+
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+
+    secrets:
+      - node_clients_public_keys
+      - mongo_initdb_root_username
+      - mongo_initdb_root_password
+
+  wg-node-mongo:
+    image:
+      mongo
+    container_name: wg-node-mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongo_initdb_root_username
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo_initdb_root_password
+
+    volumes:
+      - ./.mongo-data:/data/db
+
+    secrets:
+      - mongo_initdb_root_username
+      - mongo_initdb_root_password
+
+    ports:
+      - "27017:27017"
+
+secrets:
+  node_clients_public_keys:
+    file: .secrets/node_clients_public_keys
+
+  mongo_initdb_root_username:
+    file: ./.secrets/mongo_initdb_root_username
+
+  mongo_initdb_root_password:
+    file: ./.secrets/mongo_initdb_root_password
