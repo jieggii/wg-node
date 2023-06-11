@@ -53,7 +53,7 @@ async def client_get_config(client_id: str) -> PlainTextResponse:
     if client is None:
         raise HTTPException(HTTPStatus.NOT_FOUND, "client not found")
 
-    config = WIREGUARD_CONFIG.generate_client_config(client_id)
+    config = WIREGUARD_CONFIG.generate_client_config(client)
     return PlainTextResponse(config)
 
 
@@ -67,7 +67,7 @@ async def client_update(client_id: str, enabled: bool) -> ClientUpdateResponse:
     if client is None:
         raise HTTPException(HTTPStatus.NOT_FOUND, "client not found")
 
-    await client_id.set({Client.enabled: enabled})  # noqa
+    await client.set({Client.enabled: enabled})  # noqa
     await update_wg_config()
 
     return ClientUpdateResponse(enabled=client.enabled)

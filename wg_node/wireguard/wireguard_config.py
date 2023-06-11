@@ -77,7 +77,7 @@ PostDown =
             if client.enabled:
                 content += f"""
 # client_id={client.client_id}
-[Client]
+[Peer]
 PublicKey = {client.public_key}
 PresharedKey = {client.preshared_key}
 AllowedIPs = {client.address}/32
@@ -92,7 +92,7 @@ PrivateKey = {client.private_key}
 Address = {client.address}/24
 DNS = {_CLIENT_DNS}
 
-[Client]
+[Peer]
 PublicKey = {self._public_key}
 PresharedKey = {client.preshared_key}
 Endpoint = {config.Wireguard.PUBLIC_HOSTNAME}:{config.Wireguard.PUBLIC_PORT}
