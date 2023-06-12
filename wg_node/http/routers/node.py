@@ -12,7 +12,7 @@ class NodeStatusResponse(BaseModel):
 
 
 @router.get("/status", summary="returns clients count and active clients count")
-async def status() -> NodeStatusResponse:
+async def node_status() -> NodeStatusResponse:
     clients_count = await Client.all().count()
     enabled_clients_count = await Client.find(Client.enabled == True).count()  # noqa
 
@@ -27,7 +27,7 @@ class NodeWipeResponse(BaseModel):
 
 
 @router.delete("/wipe", summary="permanently deletes all clients")
-async def wipe() -> NodeWipeResponse:
+async def node_wipe() -> NodeWipeResponse:
     all_clients = Client.all()
     clients_count = await all_clients.count()
     await all_clients.delete()
