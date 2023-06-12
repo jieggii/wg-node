@@ -46,6 +46,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.12.2"
+requires_python = ">=3.6.0"
+summary = "Screen-scraping library"
+dependencies = [
+    "soupsieve>1.2",
+]
+
+[[package]]
 name = "betterconf"
 version = "2.6.1"
 requires_python = ">=3.6,<4.0"
@@ -118,6 +127,18 @@ summary = "FastAPI framework, high performance, easy to learn, fast to code, rea
 dependencies = [
     "pydantic!=1.7,!=1.7.1,!=1.7.2,!=1.7.3,!=1.8,!=1.8.1,<2.0.0,>=1.6.2",
     "starlette<0.28.0,>=0.27.0",
+]
+
+[[package]]
+name = "furo"
+version = "2023.5.20"
+requires_python = ">=3.7"
+summary = "A clean customisable Sphinx documentation theme."
+dependencies = [
+    "beautifulsoup4",
+    "pygments>=2.7",
+    "sphinx-basic-ng",
+    "sphinx<8.0,>=6.0",
 ]
 
 [[package]]
@@ -292,6 +313,12 @@ version = "2.2.0"
 summary = "This package provides 29 stemmers for 28 languages generated from Snowball algorithms."
 
 [[package]]
+name = "soupsieve"
+version = "2.4.1"
+requires_python = ">=3.7"
+summary = "A modern CSS selector implementation for Beautiful Soup."
+
+[[package]]
 name = "sphinx"
 version = "7.0.1"
 requires_python = ">=3.8"
@@ -313,6 +340,15 @@ dependencies = [
     "sphinxcontrib-jsmath",
     "sphinxcontrib-qthelp",
     "sphinxcontrib-serializinghtml>=1.1.5",
+]
+
+[[package]]
+name = "sphinx-basic-ng"
+version = "1.0.0b1"
+requires_python = ">=3.7"
+summary = "A modern skeleton for Sphinx themes."
+dependencies = [
+    "sphinx>=4.0",
 ]
 
 [[package]]
@@ -442,7 +478,7 @@ summary = "A small Python utility to set file creation time on Windows"
 lock_version = "4.2"
 cross_platform = true
 groups = ["default", "dev"]
-content_hash = "sha256:7c529a0ffc10dd68ab8f7350c30338c4f0ffd95beebacac00afd8d460bf541d9"
+content_hash = "sha256:e78a3d81d81bede25ab1e9d0f916d7ba437b09980c92e8e79addf38ee4f44466"
 
 [metadata.files]
 "aiofile 3.8.7" = [
@@ -464,6 +500,10 @@ content_hash = "sha256:7c529a0ffc10dd68ab8f7350c30338c4f0ffd95beebacac00afd8d460
 "beanie 1.19.2" = [
     {url = "https://files.pythonhosted.org/packages/25/8f/13dab1c2c3d88dadb263e7acc45dc36e5d7c176a2e6c2d2f9627cd6022be/beanie-1.19.2-py3-none-any.whl", hash = "sha256:fba803e954eff3f036db2236c1e02fe7afffe4330db2108d405ac820076e3ae1"},
     {url = "https://files.pythonhosted.org/packages/f2/44/8c537d36a7dcb60287db68e85864deeb07a3216e01b1df8c6a7f9a264257/beanie-1.19.2.tar.gz", hash = "sha256:1894c984a9f129bce03e19a9cb52ad47002bb3b4ea1a6b7af3a8a65978a35b78"},
+]
+"beautifulsoup4 4.12.2" = [
+    {url = "https://files.pythonhosted.org/packages/57/f4/a69c20ee4f660081a7dedb1ac57f29be9378e04edfcb90c526b923d4bebc/beautifulsoup4-4.12.2-py3-none-any.whl", hash = "sha256:bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a"},
+    {url = "https://files.pythonhosted.org/packages/af/0b/44c39cf3b18a9280950ad63a579ce395dda4c32193ee9da7ff0aed547094/beautifulsoup4-4.12.2.tar.gz", hash = "sha256:492bbc69dca35d12daac71c4db1bfff0c876c00ef4a2ffacce226d4638eb72da"},
 ]
 "betterconf 2.6.1" = [
     {url = "https://files.pythonhosted.org/packages/01/43/ee2a39b860d9ad527bd168267927c5b987240c569b6f36cea8885e8fef9a/betterconf-2.6.1-py3-none-any.whl", hash = "sha256:e43e1d3411b868acee8b6e4c0cad911febba60c4ff476700ac54c006f6e0fe12"},
@@ -619,6 +659,10 @@ content_hash = "sha256:7c529a0ffc10dd68ab8f7350c30338c4f0ffd95beebacac00afd8d460
 "fastapi 0.96.0" = [
     {url = "https://files.pythonhosted.org/packages/18/59/bc4b64f5bbb0b36497f8fe52794c4441bea06258b710c36cc597c04abaa3/fastapi-0.96.0.tar.gz", hash = "sha256:71232d47c2787446991c81c41c249f8a16238d52d779c0e6b43927d3773dbe3c"},
     {url = "https://files.pythonhosted.org/packages/b4/61/b62cd764a6d23220e5e8195405f6926643a41b088d3de550407e8a4edd80/fastapi-0.96.0-py3-none-any.whl", hash = "sha256:b8e11fe81e81eab4e1504209917338e0b80f783878a42c2b99467e5e1019a1e9"},
+]
+"furo 2023.5.20" = [
+    {url = "https://files.pythonhosted.org/packages/7f/0e/889dae152d33c35cb7fc5a1076df6a1f5e0c94642d241fab90234d96a934/furo-2023.5.20.tar.gz", hash = "sha256:40e09fa17c6f4b22419d122e933089226dcdb59747b5b6c79363089827dea16f"},
+    {url = "https://files.pythonhosted.org/packages/fd/7e/4b38c29717b8c1e2d9e839afeb1a133178fd572df176b1c2ee0f159fa5a9/furo-2023.5.20-py3-none-any.whl", hash = "sha256:594a8436ddfe0c071f3a9e9a209c314a219d8341f3f1af33fdf7c69544fab9e6"},
 ]
 "h11 0.14.0" = [
     {url = "https://files.pythonhosted.org/packages/95/04/ff642e65ad6b90db43e668d70ffb6736436c7ce41fcc549f4e9472234127/h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
@@ -947,9 +991,17 @@ content_hash = "sha256:7c529a0ffc10dd68ab8f7350c30338c4f0ffd95beebacac00afd8d460
     {url = "https://files.pythonhosted.org/packages/44/7b/af302bebf22c749c56c9c3e8ae13190b5b5db37a33d9068652e8f73b7089/snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
     {url = "https://files.pythonhosted.org/packages/ed/dc/c02e01294f7265e63a7315fe086dd1df7dacb9f840a804da846b96d01b96/snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
 ]
+"soupsieve 2.4.1" = [
+    {url = "https://files.pythonhosted.org/packages/47/9e/780779233a615777fbdf75a4dee2af7a345f4bf74b42d4a5f836800b9d91/soupsieve-2.4.1.tar.gz", hash = "sha256:89d12b2d5dfcd2c9e8c22326da9d9aa9cb3dfab0a83a024f05704076ee8d35ea"},
+    {url = "https://files.pythonhosted.org/packages/49/37/673d6490efc51ec46d198c75903d99de59baffdd47aea3d071b80a9e4e89/soupsieve-2.4.1-py3-none-any.whl", hash = "sha256:1c1bfee6819544a3447586c889157365a27e10d88cde3ad3da0cf0ddf646feb8"},
+]
 "sphinx 7.0.1" = [
     {url = "https://files.pythonhosted.org/packages/4b/a9/9760e8373a11a62f5ef66684771b0a5b2c4a699bf0dbbc650ca2b75cec36/sphinx-7.0.1-py3-none-any.whl", hash = "sha256:60c5e04756c1709a98845ed27a2eed7a556af3993afb66e77fec48189f742616"},
     {url = "https://files.pythonhosted.org/packages/61/b6/b2ca621fba7f1d938d75891fe175ba8054b47e803d11727d3e9f4433d86c/Sphinx-7.0.1.tar.gz", hash = "sha256:61e025f788c5977d9412587e733733a289e2b9fdc2fef8868ddfbfc4ccfe881d"},
+]
+"sphinx-basic-ng 1.0.0b1" = [
+    {url = "https://files.pythonhosted.org/packages/76/aa/eb38c4ad0a46e9fe45604bde48fee569c1954929edb7c3f1d8a3a86fca71/sphinx_basic_ng-1.0.0b1-py3-none-any.whl", hash = "sha256:ade597a3029c7865b24ad0eda88318766bcc2f9f4cef60df7e28126fde94db2a"},
+    {url = "https://files.pythonhosted.org/packages/80/77/df8674b4c0eb26d5a3817858ec83f103389c7c1ce31f7d31b13394a6ff0e/sphinx_basic_ng-1.0.0b1.tar.gz", hash = "sha256:89374bd3ccd9452a301786781e28c8718e99960f2d4f411845ea75fc7bb5a9b0"},
 ]
 "sphinxcontrib-applehelp 1.0.4" = [
     {url = "https://files.pythonhosted.org/packages/06/c1/5e2cafbd03105ce50d8500f9b4e8a6e8d02e22d0475b574c3b3e9451a15f/sphinxcontrib_applehelp-1.0.4-py3-none-any.whl", hash = "sha256:29d341f67fb0f6f586b23ad80e072c8e6ad0b48417db2bde114a4c9746feb228"},

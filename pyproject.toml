@@ -13,6 +13,7 @@ dependencies = [
     "aiofile>=3.8.5",
     "uvicorn[standard]>=0.22.0",
     "rsa>=4.9",
+    "furo>=2023.5.20",
 ]
 requires-python = ">=3.10"
 license = {text = "MIT"}
