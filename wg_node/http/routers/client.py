@@ -1,12 +1,14 @@
 import asyncio
+import re
 from http import HTTPStatus
+from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import PlainTextResponse
 from loguru import logger
 from pydantic import BaseModel
 
-from wg_node.database import Client
+from wg_node.database import Client, CLIENT_ID_REGEX
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_client_address
 
 router = APIRouter(prefix="/client")
@@ -32,6 +34,8 @@ class ClientCreateParams(BaseModel):
 
 @router.post("/", summary="creates new client")
 async def client_create(params: ClientCreateParams) -> ClientCreateResponse:
+    if not re.fullmatch(CLIENT_ID_REGEX, params.client_id):
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="invalid client identifier")
     if await Client.find(Client.client_id == params.client_id).exists():
         raise HTTPException(status_code=HTTPStatus.CONFLICT, detail="client with this client_id already exists")
 
@@ -47,14 +51,24 @@ async def client_create(params: ClientCreateParams) -> ClientCreateResponse:
     return ClientCreateResponse(address=client.address)
 
 
-@router.get("/{client_id}/config", summary="returns client's wireguard config")
-async def client_get_config(client_id: str) -> PlainTextResponse:
+class ClientGetResponse(BaseModel):
+    client_id: str
+    address: str
+    enabled: bool
+    created_at: datetime
+
+
+@router.get("/{client_id}", summary="returns information about client")
+async def client_get(client_id: str) -> ClientGetResponse:
     client = await Client.find_one(Client.client_id == client_id)
     if client is None:
         raise HTTPException(HTTPStatus.NOT_FOUND, "client not found")
-
-    config = WIREGUARD_CONFIG.generate_client_config(client)
-    return PlainTextResponse(config)
+    return ClientGetResponse(
+        client_id=client.client_id,
+        address=client.address,
+        created_at=client.created_at,
+        enabled=client.enabled,
+    )
 
 
 class ClientUpdateResponse(BaseModel):
@@ -85,3 +99,13 @@ async def client_delete(client_id: str) -> ClientDeleteResponse:
     await client.delete()
     await update_wg_config()
     return ClientDeleteResponse(client_id=client.client_id)
+
+
+@router.get("/{client_id}/config", summary="returns client's wireguard config")
+async def client_get_config(client_id: str) -> PlainTextResponse:
+    client = await Client.find_one(Client.client_id == client_id)
+    if client is None:
+        raise HTTPException(HTTPStatus.NOT_FOUND, "client not found")
+
+    config = WIREGUARD_CONFIG.generate_client_config(client)
+    return PlainTextResponse(config)

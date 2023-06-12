@@ -5,9 +5,11 @@ from pydantic import Field, root_validator
 
 from wg_node.wireguard.key import generate_keypair, generate_preshared_key
 
+CLIENT_ID_REGEX = r".+"
+
 
 class Client(Document):
-    client_id: Indexed(str, unique=True)
+    client_id: Indexed(str, unique=True) = Field(type=str, regex=CLIENT_ID_REGEX)
     address: Indexed(str, unique=True)
 
     private_key: str
@@ -36,7 +38,6 @@ class Client(Document):
 
     def __str__(self) -> str:
         return f"Client<uuid={self.uuid}>"
-
 
 # async def get_all_peers() -> list[Client]:
 #     return await Client.all().to_list()
