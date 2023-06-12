@@ -1,6 +1,8 @@
-# wg-node `<- WORK IN PROGRESS`
+# wg-node
 
 Deploy and manage your Wireguard nodes with one hand!
+
+> Warning: work on the project is still in progress.
 
 > **wg-node** (aka Wireguard node) provides you a simple way to run and manage Wireguard node.
 > Run in docker container and manage it effortlessly through HTTP REST API.
@@ -28,4 +30,4 @@ That's why there is HTTP REST API instead of cute UI and are request signatures.
 
 ## How to run and use?
 
-Please refer to the [project documentation]().
+Please refer to the [project documentation](https://github.com/jieggii/wg-node).
