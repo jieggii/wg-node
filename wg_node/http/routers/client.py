@@ -1,14 +1,14 @@
 import asyncio
 import re
-from http import HTTPStatus
 from datetime import datetime
+from http import HTTPStatus
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import PlainTextResponse
 from loguru import logger
 from pydantic import BaseModel
 
-from wg_node.database import Client, CLIENT_ID_REGEX
+from wg_node.database import CLIENT_ID_REGEX, Client
 from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG, generate_client_address
 
 router = APIRouter(prefix="/client")
