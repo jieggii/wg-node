@@ -22,7 +22,8 @@ license = {text = "MIT"}
 dev = [
     "isort>=5.12.0",
     "black>=23.3.0",
-    "sphinx>=7.0.1",
+    "mkdocs>=1.4.3",
+    "mkdocs-terminal>=4.4.0",
 ]
 
 [tool.pdm.scripts]

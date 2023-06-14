@@ -1,0 +1,13 @@
+site_name: wg-node documentation
+nav:
+  - "Home": index.md
+#  - "Introduction": introduction.md
+#  - "Quickstart": quickstart.md
+
+
+theme:
+  name: terminal
+
+markdown_extensions:
+  - toc:
+      permalink: "(~)"
