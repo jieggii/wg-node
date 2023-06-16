@@ -1,11 +1,11 @@
 # Welcome to wg-node documentation!
 
-> Deploy and manage your Wireguard nodes with one hand!
+> Deploy and manage your WireGuard nodes with one hand!
 
-**wg-node** is an application which provides you a simple way to run and manage Wireguard node.
+**wg-node** is an application which provides you a simple way to run and manage WireGuard node.
 Run in docker container and manage it effortlessly through HTTP REST API.
 
-You can set up multiple Wireguard nodes on different servers and manage them all safely and easily
+You can set up multiple WireGuard nodes on different servers and manage them all safely and easily
 from a single machine.
 
 **wg-node** is mostly inspired by [wg-easy](https://github.com/wg-easy/wg-easy), but is more minimalistic
