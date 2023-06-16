@@ -31,7 +31,7 @@ At first create `./.secrets` directory, where all docker secrets will be located
 mkdir -p "./.secrets"
 ```
 
-## Step 4.1 Set up `mongo_initdb_root_username` and `mongodb_initdb_root_password` secrets
+### Step 4.1 Set up `mongo_initdb_root_username` and `mongodb_initdb_root_password` secrets
 
 `mongo_initdb_root_username` and `mongodb_initdb_root_password` secrets stand for MongoDB root user credentials.
 You need to come up with them yourself!
@@ -43,7 +43,7 @@ echo "<USERNAME>" >> "./.secrets/mongo_initdb_root_username"
 echo "<PASSWORD>" >> "./secrets/mongo_initdb_root_password"
 ```
 
-## Step 4.2 Set up `node_clients_public_keys` secret
+### Step 4.2 Set up `node_clients_public_keys` secret
 
 > `node_clients_public_keys` docker secret is a directory, which contains files containing
 > public keys (in PEM format) of known node clients

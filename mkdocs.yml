@@ -18,6 +18,7 @@ nav:
   - "Usage":
       - "Set up": "./usage/set-up-wg-node-on-your-server.md"
       - "Run": "./usage/run-wg-node-on-your-server.md"
+      - "Manage": "./usage/manage-your-wg-node-instance.md"
 
 #  palette: gruvbox_dark
 
