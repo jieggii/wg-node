@@ -14,7 +14,7 @@ from a single machine.
 and has some noticeable key differences:
 
 - No UI, only HTTP REST API.
-- All requests to the API must be signed using a public RSA key, which is known by server running wg-node.
+- All requests to the API must be signed using private RSA key, whose public pair is known by server running wg-node.
 - Uses MongoDB to store clients instead of JSON files.
 
 The application can be run on any GNU/Linux machine whose kernel supports WireGuard (linux 5.6+).
