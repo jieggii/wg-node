@@ -9,7 +9,7 @@ So, let's dive in!
 The project architecture consists of two parts (and docker containers):
 
 - **wg-node-app** - web server which listens for API requests and manages WireGuard config & connections.
-- **wg-node-mongox** - MongoDB instance where information about clients' is stored.
+- **wg-node-mongo** - MongoDB instance where information about clients' is stored.
   MongoDB's data directory will be mounted to `./.mongo-data` by default.
 
 ## Project directories and files (essentials)
@@ -32,7 +32,7 @@ There are three _docker secrets_ in this project:
 
 ### File containing environmental variables which are necessary to be set (`./.env` file)
 
-At the moment there is only one environmental variable which is necessary to be set up before running
+At the moment, there is only one environmental variable which is necessary to be set up before running
 **wg-node**. It is `WIREGUARD_PUBLIC_HOSTNAME` and it has to be specified inside `./.env` file.
 The easiest way to create this file is to use the example file (`.env.example`):
 

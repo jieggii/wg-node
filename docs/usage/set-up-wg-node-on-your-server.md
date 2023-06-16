@@ -1,6 +1,6 @@
 # Set up wg-node on your server
 
-> To set up **wg-node** on your own server you will need to follow some simple steps!
+> To set up **wg-node** on your own server, you will need to follow some simple steps!
 
 ## Step 1. Ensure that your machine supports Wireguard
 
