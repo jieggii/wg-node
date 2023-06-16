@@ -2,16 +2,16 @@
 
 > To set up **wg-node** on your own server, you will need to follow some simple steps!
 
-## Step 1. Ensure that your machine supports Wireguard
+## Step 1. Ensure that your machine supports WireGuard
 
-Please ensure that your kernel supports Wireguard module.
+Please ensure that your kernel supports WireGuard. (#TODO: how?)
 
 ## Step 2. Install dependencies
 
 **wg-node** is being run in docker containers, so, the only dependencies you need to install are
 [docker](https://www.docker.com/) and [docker compose plugin](https://docs.docker.com/compose/).
 
-So, install them and make sure that they are set up properly.
+Install them and make sure that they are set up properly. (#TODO: more details)
 
 ## Step 3. Set up `WIREGUARD_PUBLIC_HOST` environmental variable
 
