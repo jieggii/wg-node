@@ -1,6 +1,6 @@
 # Run wg-node on your server
 
-> When everything is set up properly, it's time to finally run WireGuard node!
+> When everything is set up properly, it's time to finally run WireGuard node.
 
 Simply run the following command to build the necessary docker containers:
 

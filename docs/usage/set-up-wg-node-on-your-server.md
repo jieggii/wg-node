@@ -23,7 +23,7 @@ The variable should be located in the `./.env` file! Run `cp ./.env.example ./.e
 ## Step 4. Set up [docker secrets](https://docs.docker.com/engine/swarm/secrets/)
 
 > This step is a bit more complex than previous ones, but don't be afraid!
-> Just follow my instructions, and you will be fine :)
+> Just follow my instructions, and everything will be ok.
 
 At first create `./.secrets` directory, where all docker secrets will be located:
 
@@ -56,4 +56,4 @@ create file containing generated public key inside the
 
 Okay... Let's try!
 
-To be continued!
+To be continued...

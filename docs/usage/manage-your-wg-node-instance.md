@@ -1,7 +1,7 @@
 # Manage your wg-node instance
 
 > When everything is set up properly and already running, it is time to send requests to the
-> **wg-node** instance and have some fun!
+> **wg-node** instance and have some fun.
 
 ## Sending API request
 
@@ -16,7 +16,7 @@ What does it mean?
 
 ### How to sign request parameters?
 
-It is really simple and also dumb! The recipe:
+It is really simple and also silly. The recipe:
 
 1. Take **path params**, **query params** and **request body** (order is important)
    in JSON format and remove all spaces and newlines from them. For example,
