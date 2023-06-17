@@ -1,27 +1,21 @@
-site_name: wg-node documentation
+site_name: "wg-node documentation"
 site_description: "wg-node documentation"
 repo_url: "https://github.com/jieggii/wg-node"
-site_url: https://jieggii.github.io/wg-node
+site_url: "https://jieggii.github.io/wg-node"
 
 theme:
-  name: "cinder"
-  colorscheme: "github"
-#  hljs_languages:
-#    - julia
-#    - perl
-#    - dotenv
-
+  name: "terminal"
+  palette: "pink"
 
 nav:
-  - "Home": index.md
-  - "Project structure and architecture": project-structure-and-architecture.md
+  - "Home": "index.md"
+  - "Project structure and architecture": "project-structure-and-architecture.md"
   - "Usage":
       - "Set up": "./usage/set-up-wg-node-on-your-server.md"
       - "Run": "./usage/run-wg-node-on-your-server.md"
       - "Manage": "./usage/manage-your-wg-node-instance.md"
 
-#  palette: gruvbox_dark
 
 markdown_extensions:
   - toc:
-      permalink: "#"
+      permalink: " (~)"

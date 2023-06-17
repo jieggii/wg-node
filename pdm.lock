@@ -244,9 +244,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "mkdocs-cinder"
-version = "1.2.0"
-summary = "A clean responsive theme for the MkDocs static documentation site generator"
+name = "mkdocs-terminal"
+version = "4.4.0"
+requires_python = ">=3.7"
+summary = "Terminal.css theme for MkDocs"
+dependencies = [
+    "jinja2>=2.10",
+    "markdown",
+    "mkdocs>=1.4.2",
+    "pygments",
+    "pymdown-extensions",
+]
 
 [[package]]
 name = "motor"
@@ -301,6 +309,16 @@ name = "pygments"
 version = "2.15.1"
 requires_python = ">=3.7"
 summary = "Pygments is a syntax highlighting package written in Python."
+
+[[package]]
+name = "pymdown-extensions"
+version = "10.0.1"
+requires_python = ">=3.7"
+summary = "Extension pack for Python Markdown."
+dependencies = [
+    "markdown>=3.2",
+    "pyyaml",
+]
 
 [[package]]
 name = "pymongo"
@@ -551,7 +569,7 @@ summary = "A small Python utility to set file creation time on Windows"
 lock_version = "4.2"
 cross_platform = true
 groups = ["default", "dev"]
-content_hash = "sha256:ec092d26acab2dab6de78e48f81da116609bb5dbd07dea728ffc13b5548cde1f"
+content_hash = "sha256:438eb1288b61d041af472342f571d2e48e15fefcd3c1ede845b2e0c4612ff844"
 
 [metadata.files]
 "aiofile 3.8.7" = [
@@ -876,9 +894,9 @@ content_hash = "sha256:ec092d26acab2dab6de78e48f81da116609bb5dbd07dea728ffc13b55
     {url = "https://files.pythonhosted.org/packages/42/7a/5ed794942ace9d00bb77a8036c64c999cda6ebaab57e9b8a6ec1aa5fc900/mkdocs-1.4.3-py3-none-any.whl", hash = "sha256:6ee46d309bda331aac915cd24aab882c179a933bd9e77b80ce7d2eaaa3f689dd"},
     {url = "https://files.pythonhosted.org/packages/b0/ef/49b4427e5eec761b77a3c3c421d3fd63010e2798b7401dc0fa2b875ef6b5/mkdocs-1.4.3.tar.gz", hash = "sha256:5955093bbd4dd2e9403c5afaf57324ad8b04f16886512a3ee6ef828956481c57"},
 ]
-"mkdocs-cinder 1.2.0" = [
-    {url = "https://files.pythonhosted.org/packages/6e/23/d36947b446312796db20668f0e389ba73e8df53f2ebb0cb9e729ef92873b/mkdocs_cinder-1.2.0-py3-none-any.whl", hash = "sha256:0615bb1c7bda0d06379c281a8d19a2c1499179c01805c9fff9208ab13af14cbe"},
-    {url = "https://files.pythonhosted.org/packages/cd/c2/bf779196d7c6be5273ebd214a85bb2fa37f95ec356f11b01527c848039cb/mkdocs-cinder-1.2.0.tar.gz", hash = "sha256:2e23e940792d858347553bf029770b52ecfe10ce2707d5cc7387a822f0a025d2"},
+"mkdocs-terminal 4.4.0" = [
+    {url = "https://files.pythonhosted.org/packages/93/65/7973dfe5ae03dd83a5a4e203b542ebacb16fd0c796e3f93f3cb98c3ffcc2/mkdocs_terminal-4.4.0-py3-none-any.whl", hash = "sha256:b2c94dc651c840e9762a1040d39371a31cc7482f7768e619e317419ebae4e40e"},
+    {url = "https://files.pythonhosted.org/packages/b3/a4/afa8826c3d6971f3e93cb3669936b25579314fef2a4d648fe72729c9675f/mkdocs_terminal-4.4.0.tar.gz", hash = "sha256:d72b87b3d0edf470695811cb56c440a43b0387212590a5dfb2f26861c6e518d7"},
 ]
 "motor 3.1.2" = [
     {url = "https://files.pythonhosted.org/packages/82/96/ae017cd62761d2fd2cc1eabfc902c3b4e3768fe994fc6a2f474694a56910/motor-3.1.2.tar.gz", hash = "sha256:80c08477c09e70db4f85c99d484f2bafa095772f1d29b3ccb253270f9041da9a"},
@@ -945,6 +963,10 @@ content_hash = "sha256:ec092d26acab2dab6de78e48f81da116609bb5dbd07dea728ffc13b55
 "pygments 2.15.1" = [
     {url = "https://files.pythonhosted.org/packages/34/a7/37c8d68532ba71549db4212cb036dbd6161b40e463aba336770e80c72f84/Pygments-2.15.1-py3-none-any.whl", hash = "sha256:db2db3deb4b4179f399a09054b023b6a586b76499d36965813c71aa8ed7b5fd1"},
     {url = "https://files.pythonhosted.org/packages/89/6b/2114e54b290824197006e41be3f9bbe1a26e9c39d1f5fa20a6d62945a0b3/Pygments-2.15.1.tar.gz", hash = "sha256:8ace4d3c1dd481894b2005f560ead0f9f19ee64fe983366be1a21e171d12775c"},
+]
+"pymdown-extensions 10.0.1" = [
+    {url = "https://files.pythonhosted.org/packages/a2/17/607fc71d709c0df9cca39ed57ed6f8b1cb77863073004c7def8a02a45fe2/pymdown_extensions-10.0.1-py3-none-any.whl", hash = "sha256:ae66d84013c5d027ce055693e09a4628b67e9dec5bce05727e45b0918e36f274"},
+    {url = "https://files.pythonhosted.org/packages/cb/06/5779fe8fa684080bcb0eeabcbcb9bfe2cf14dcf776b687001e7820fba660/pymdown_extensions-10.0.1.tar.gz", hash = "sha256:b44e1093a43b8a975eae17b03c3a77aad4681b3b56fce60ce746dbef1944c8cb"},
 ]
 "pymongo 4.3.3" = [
     {url = "https://files.pythonhosted.org/packages/01/10/e7157fcda1db4f759c858f8d9dc001112eb630136894056bb29f332137c3/pymongo-4.3.3-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:bb869707d8e30645ed6766e44098600ca6cdf7989c22a3ea2b7966bb1d98d4b2"},
