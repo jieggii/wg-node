@@ -23,7 +23,7 @@ There are three _docker secrets_ in this project:
 - `node_clients_public_keys` (directory) - contains files in PEM format with node clients' public keys,
   for example:
 
-```
+```title=".secrets/node_clients_public_keys/example.pem"
   -----BEGIN RSA PUBLIC KEY-----
   todo
   -----END RSA PUBLIC KEY-----
@@ -40,7 +40,7 @@ The easiest way to create this file is to use the example file (`.env.example`):
 cp ./.env.example ./.env
 ```
 
-```dotenv
+```dotenv title=".env"
 # public hostname of the server
 WIREGUARD_PUBLIC_HOSTNAME=
 ```

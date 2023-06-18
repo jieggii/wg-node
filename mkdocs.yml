@@ -1,21 +1,68 @@
 site_name: "wg-node documentation"
 site_description: "wg-node documentation"
-repo_url: "https://github.com/jieggii/wg-node"
 site_url: "https://jieggii.github.io/wg-node"
 
+copyright: Copyright &copy; 2023 jieggii
+
+repo_url: "https://github.com/jieggii/wg-node"
+repo_name: jieggii/wg-node
+
 theme:
-  name: "terminal"
-  palette: "pink"
+  name: "material"
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    #    - navigation.top
+    - navigation.footer
+    - content.code.copy
+
+  icon:
+    repo: fontawesome/brands/git-alt
+
+#plugins:
+#  - social
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jieggii/wg-node/
+      name: wg-node repo
+
 
 nav:
   - "Home": "index.md"
   - "Project structure and architecture": "project-structure-and-architecture.md"
-  - "Usage":
-      - "Set up": "./usage/set-up-wg-node-on-your-server.md"
-      - "Run": "./usage/run-wg-node-on-your-server.md"
-      - "Manage": "./usage/manage-your-wg-node-instance.md"
+  - "Start using wg-node":
+      - "Setup instructions": "./usage/set-up-wg-node-on-your-server.md"
+      - "Run wg-node": "./usage/run-wg-node-on-your-server.md"
+      - "Manage wg-node instance": "./usage/manage-your-wg-node-instance.md"
 
 
 markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
   - toc:
-      permalink: " (~)"
+      permalink: "#"
+
+

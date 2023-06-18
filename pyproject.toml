@@ -3,7 +3,7 @@ name = "wg_node"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "jieggii", email = "jieggii@protonmail.com"},
+    { name = "jieggii", email = "jieggii@protonmail.com" },
 ]
 dependencies = [
     "fastapi>=0.95.1",
@@ -13,17 +13,16 @@ dependencies = [
     "aiofile>=3.8.5",
     "uvicorn[standard]>=0.22.0",
     "rsa>=4.9",
-    "furo>=2023.5.20",
 ]
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
 [tool.pdm.dev-dependencies]
 dev = [
     "isort>=5.12.0",
     "black>=23.3.0",
     "mkdocs>=1.4.3",
-    "mkdocs-terminal>=4.4.0",
+    "mkdocs-material>=9.1.16",
 ]
 
 [tool.pdm.scripts]

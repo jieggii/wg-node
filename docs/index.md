@@ -1,6 +1,11 @@
 # Welcome to wg-node documentation!
 
-> Deploy and manage your WireGuard nodes with one hand!
+Deploy and manage your WireGuard nodes with one hand!
+
+!!! warning
+
+    Work on **wg-node** and its documentation is still in progress.
+    Please feel free to contribute in any way to this project.
 
 **wg-node** is an application which provides you a simple way to run and manage WireGuard node.
 Run in docker container and manage it effortlessly through HTTP REST API.
@@ -17,7 +22,3 @@ and has some noticeable key differences:
 - Uses MongoDB instead of JSON files to store clients.
 
 The application can be run on any GNU/Linux machine whose kernel supports WireGuard (linux 5.6+).
-
-## Links:
-
-* [GitHub repository](https://github.com/jieggii/wg-node)

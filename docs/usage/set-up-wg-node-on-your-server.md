@@ -15,17 +15,17 @@ Install them and make sure that they are set up properly. (#TODO: more details)
 
 ## Step 3. Set up `WIREGUARD_PUBLIC_HOST` environmental variable
 
-> `WIREGUARD_PUBLIC_HOST` environmental variable should be set to your machine's public IP or
-> domain name, which is associated with the machine. (e.g. `example.com` or `8.8.8.8`).
+`WIREGUARD_PUBLIC_HOST` environmental variable should be set to your machine's public IP or
+domain name, which is associated with the machine, for example `example.com` or `8.8.8.8`.
 
 The variable should be located in the `./.env` file.
-Use `./.env.example` file as template to avoid typos:
+You can use `./.env.example` file as template to avoid typos:
 
 ```shell
 cp ./.env.example ./.env
 ```
 
-```dotenv
+```dotenv title=".env"
 # public hostname of the server
 WIREGUARD_PUBLIC_HOSTNAME=<SERVER_IP_ADDRESS_OR_DOMAIN_NAME>
 
@@ -33,7 +33,10 @@ WIREGUARD_PUBLIC_HOSTNAME=<SERVER_IP_ADDRESS_OR_DOMAIN_NAME>
 
 ## Step 4. Set up _docker secrets_
 
-> [What are docker secrets?](https://docs.docker.com/engine/swarm/secrets/)
+!!! note
+
+    If you have never heard about docker secrets, it would be useful to read about them
+    from the [docker documentation](https://docs.docker.com/engine/swarm/secrets/).
 
 ### Step 4.1. Create directory for docker secrets
 
@@ -57,10 +60,10 @@ echo "<PASSWORD>" >> "./secrets/mongo_initdb_root_password"
 
 ### Step 4.3 Set up `node_clients_public_keys` secret
 
-> `node_clients_public_keys` docker secret is a directory, which contains files containing
-> public keys (in PEM format) of known node clients
-> (a node client is any single teapot or computer which has its own public and private keys and
-> whose public key is listed in `node_clients_public_keys` secret on the server side).
+`node_clients_public_keys` docker secret is a directory, which contains files containing
+public keys (in PEM format) of known node clients
+(a node client is any single teapot or computer which has its own public and private keys and
+whose public key is listed in `node_clients_public_keys` secret on the server side).
 
 From the note above, we can see that we have to generate keypair somehow, and
 create file containing generated public key inside the
