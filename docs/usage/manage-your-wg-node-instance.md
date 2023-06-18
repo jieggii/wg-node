@@ -14,7 +14,8 @@ Important thing to know: **all API requests must be signed using node client's p
 What does it mean?
 
 1. HTTP request must contain `Client-Public-Key` header containing (you won't believe) node client's public key.
-2. HTTP request must contain `Params-Signature` header containing (you won't believe) request parameters' signature.
+2. HTTP request must contain `Request-Params-Signature` header containing (you won't believe) request parameters'
+   signature.
 
 ### How to sign request parameters?
 
@@ -51,7 +52,7 @@ Sign the string you got in the previous step using **RSA** algorithm and **SHA-1
 
 Tada!
 Put your node client's public key in the `Client-Public-Key` header and
-HEX value of signature you got in `Params-Signature` header and finally send your request!
+HEX value of signature you got in `Request-Params-Signature` header and finally send your request!
 
 !!! info
 
