@@ -11,7 +11,7 @@ from a single machine.
 **wg-node** is mostly inspired by [wg-easy](https://github.com/wg-easy/wg-easy), but is more minimalistic
 and has some noticeable key differences:
 
-- No UI, only HTTP REST API.
+- No frontend UI, only HTTP REST API.
 - All requests to the API must be RSA-signed using client's private key,
   whose public key is known by server running wg-node.
 - Uses MongoDB instead of JSON files to store clients.
