@@ -14,6 +14,4 @@ __pycache__/
 .mongo-data/
 .secrets/
 .env
-
-# Sphynx documentation build
-docs/_build/
+.cache
