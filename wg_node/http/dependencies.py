@@ -23,12 +23,12 @@ def _normalize_dict(obj: dict) -> bytes:
 
 
 async def verify_request(
-    request: Request,
-    request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
-    client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
+        request: Request,
+        request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
+        client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
 ):
     """
-    Authenticates client:
+    Authenticates a client:
     - Ensures that client public key (from Client-Public-Key header) is known
     - Validates request params signature (which is indicated in Request-Params-Signature header)
     """

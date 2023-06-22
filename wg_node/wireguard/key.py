@@ -1,4 +1,4 @@
-from wg_node.util import execute
+from wg_node.util import execute_cmd
 
 """
 This module simply uses `wg` binary instead of generating keys manually.
@@ -13,11 +13,11 @@ b) Even if there is a proper way (it has to be, but it will take some time to fi
 
 def generate_keypair() -> (str, str):
     """Generates keypair (private and matching public key)."""
-    private_key = execute(f"wg genkey").strip()
-    public_key = execute(f"echo {private_key} | wg pubkey").strip()
+    private_key = execute_cmd(f"wg genkey").strip()
+    public_key = execute_cmd(f"echo {private_key} | wg pubkey").strip()
     return private_key, public_key
 
 
 def generate_preshared_key() -> str:
     """Generates preshared key."""
-    return execute(f"wg genkey").strip()
+    return execute_cmd(f"wg genkey").strip()
