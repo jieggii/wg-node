@@ -6,7 +6,7 @@ services:
     environment:
       NODE_CLIENTS_PUBLIC_KEYS_FILE: /run/secrets/node_clients_public_keys
 
-      WIREGUARD_PUBLIC_PORT: 51820  # remember to update ports section when updating this env var
+      WIREGUARD_PUBLIC_PORT: 51820  # remember to update the ports section when updating this env var
 
       MONGO_HOST: wg-node-mongo
       MONGO_PORT: 27017
@@ -56,8 +56,8 @@ services:
       - mongo_initdb_root_username
       - mongo_initdb_root_password
 
-    ports:
-      - "27017:27017"
+#    ports:
+#      - "27017:27017"
 
 secrets:
   node_clients_public_keys:
