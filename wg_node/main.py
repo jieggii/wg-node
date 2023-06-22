@@ -3,13 +3,13 @@ import asyncio
 from fastapi import Depends, FastAPI
 from loguru import logger
 
+from wg_node.config import config
+from wg_node.database import Client, init_database
+from wg_node.docker_secrets import read_secret_file
 from wg_node.http.dependencies import verify_request
 from wg_node.http.routers import client, node
-from wg_node.database import init_database, Client
-from wg_node.config import config
-from wg_node.docker_secrets import read_secret_file
-from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
 from wg_node.util import execute_cmd
+from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
 
 
 async def init_app() -> None:
