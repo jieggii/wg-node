@@ -20,4 +20,4 @@ def generate_keypair() -> (str, str):
 
 def generate_preshared_key() -> str:
     """Generates preshared key."""
-    return execute_cmd(f"wg genkey").strip()
+    return execute_cmd("wg genpsk").strip()
