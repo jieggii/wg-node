@@ -14,7 +14,7 @@ def _extract_public_key_from_pem(content: str) -> str:
 
 
 def read_secret_file(filename: str) -> str | NoReturn:
-    """Reads and returns docker secret file."""
+    """Reads and returns docker secret file content."""
     filepath = os.path.join(_SECRETS_DIR, filename)
     with open(filepath, "r", encoding="utf-8") as file:
         content = file.read().strip()
