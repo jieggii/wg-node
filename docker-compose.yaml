@@ -61,10 +61,10 @@ services:
 
 secrets:
   node_clients_public_keys:
-    file: .secrets/node_clients_public_keys
+    file: secrets/node_clients_public_keys
 
   mongo_initdb_root_username:
-    file: ./.secrets/mongo_initdb_root_username
+    file: secrets/mongo_initdb_root_username
 
   mongo_initdb_root_password:
-    file: ./.secrets/mongo_initdb_root_password
+    file: secrets/mongo_initdb_root_password
