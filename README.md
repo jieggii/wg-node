@@ -34,4 +34,4 @@ The application can be run on any GNU/Linux machine whose kernel supports WireGu
 
 ## How to run and use?
 
-Please refer to the [project documentation](https://jieggii.github.io/wg-node).
+Please refer to the [project documentation](https://jieggii.github.io/wg-node) (currently not up-to-date).
