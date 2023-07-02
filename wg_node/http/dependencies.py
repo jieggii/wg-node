@@ -1,75 +1,81 @@
 import json
 from http import HTTPStatus
+from typing import Any, NoReturn
 
 import rsa
 from fastapi import Header, HTTPException, Request
-from loguru import logger
 from typing_extensions import Annotated
 
-from wg_node.docker_secrets import read_node_clients_public_keys
+from wg_node.database import APIUser
 
-node_clients_public_keys = read_node_clients_public_keys()
-
-logger.info(f"loaded {len(node_clients_public_keys)} node clients public keys")
+_SIGNED_PARTS_SEPARATOR = b";"
 
 
-def _normalize_dict(obj: dict) -> bytes:
+def _normalize(obj: dict[Any, Any]) -> bytes:
     """
     Normalizes dict object to json bytes.
-    >>> _normalize_dict({"foo": "bar", "x": "y"})
+    >>> _normalize({"foo": "bar", "x": "y"})
     >>> b'{"foo":"bar","x":"y"}'
     """
-    return json.dumps(obj, separators=(",", ":"), sort_keys=False).encode()
+    return json.dumps(obj, separators=(",", ":"), sort_keys=True).encode()
 
 
-async def verify_request(
+async def verify_request_signature(
     request: Request,
-    request_params_signature: Annotated[str, Header(alias="Request-Params-Signature")],
-    client_public_key: Annotated[str, Header(alias="Client-Public-Key")],
-):
-    """
-    Authenticates a client:
-    - Ensures that client public key (from Client-Public-Key header) is known
-    - Validates request params signature (which is indicated in Request-Params-Signature header)
-    """
+    request_signature: Annotated[str, Header(alias="Request-Signature")],
+    api_user_public_key: Annotated[str, Header(alias="API-User-Public-Key")],
+) -> APIUser | NoReturn:
+    user = await APIUser.find_one(APIUser.public_key == api_user_public_key)
+    if not user:
+        raise HTTPException(HTTPStatus.FORBIDDEN, "user with such public key was not found")
 
-    # client public key is provided by the client in the Client-Public-Key header
-    # only in performance purposes, so we don't need to try verifying request params signature
-    # with all stored clients public keys
-    if client_public_key not in node_clients_public_keys:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="unknown client public key")
-
+    method = request.method
+    hostname = request.url.hostname
     path_params = request.path_params
     query_params = dict(request.query_params)
 
-    # this is very smelly code, I know, that there certainly must be something different...
-    for key, value in query_params.items():
-        if query_params[key] == "True":
-            query_params[key] = True
-        if query_params[key] == "False":
-            query_params[key] = False
-        # try:
-        #     query_params[key] = int(value)
-        # except ValueError:
-        #     continue
+    raw_body = await request.body()
+    body = await request.json() if raw_body else {}
 
-    body = await request.json()
+    method_bytes = method.encode()
+    hostname_bytes = hostname.encode()
+    path_params_bytes = _normalize(path_params)
+    query_params_bytes = _normalize(query_params)
+    body_bytes = _normalize(body)
 
-    # converting path params, query params and request body to normalized json bytes
-    # e.g. {"foo": "bar", "x": "y"} -> b'{"foo":"bar","x":"y"}'
-    path_params_bytes = _normalize_dict(path_params)
-    query_params_bytes = _normalize_dict(query_params)
-    body_bytes = _normalize_dict(body)
+    # print(f"RAW:\n{method=}\n{hostname=}\n{path_params=}\n{query_params=}\n{body=}\n", flush=True)
+    # print(
+    #     f"NORMALIZED:\n{method_bytes=}\n{hostname_bytes=}\n{path_params_bytes=}\n{query_params_bytes=}\n{body_bytes=}\n",
+    #     flush=True,
+    # )
 
-    # signed bytes are concatenation of path params, query params and request body
-    signed_bytes = path_params_bytes + query_params_bytes + body_bytes
+    signed_bytes = (
+        method_bytes
+        + _SIGNED_PARTS_SEPARATOR
+        + hostname_bytes
+        + _SIGNED_PARTS_SEPARATOR
+        + path_params_bytes
+        + _SIGNED_PARTS_SEPARATOR
+        + query_params_bytes
+        + _SIGNED_PARTS_SEPARATOR
+        + body_bytes
+    )
+    # print(f"bytes: {signed_bytes}", flush=True)
     try:
+        signature_hex = bytes.fromhex(request_signature)
+    except ValueError:
+        raise HTTPException(HTTPStatus.BAD_REQUEST, "invalid request signature")
+
+    try:
+        # print(f"{request_signature=}", flush=True)
         rsa.verify(
             message=signed_bytes,
-            signature=bytes.fromhex(request_params_signature),
+            signature=signature_hex,
             pub_key=rsa.PublicKey.load_pkcs1(
-                b"-----BEGIN RSA PUBLIC KEY-----\n" + client_public_key.encode() + b"\n-----END RSA PUBLIC KEY-----"
+                b"-----BEGIN RSA PUBLIC KEY-----\n" + user.public_key.encode() + b"\n-----END RSA PUBLIC KEY-----"
             ),
         )
     except rsa.VerificationError:
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="invalid request signature")
+        raise HTTPException(HTTPStatus.FORBIDDEN, "invalid Request-Signature header")
+
+    return user

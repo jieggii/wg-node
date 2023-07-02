@@ -1,23 +1,36 @@
-from betterconf import Config as _Config
+from os.path import exists
+from typing import NoReturn
+
+from betterconf import Config as BaseConfig
 from betterconf import field
 from betterconf.caster import to_int
+from betterconf.config import AbstractCaster  # noqa
 
 __all__ = ("config",)
 
 
-class Config(_Config):
+class ToExistingPathCaster(AbstractCaster):
+    def cast(self, val: str) -> str | NoReturn:
+        if not exists(val):
+            raise FileNotFoundError(f"file {val} does not exist")
+        return val
+
+
+to_existing_path_caster = ToExistingPathCaster()
+
+
+class Config(BaseConfig):
     """
-    Config is an interface for accessing configuration that was provided through
-    environmental variables.
+    An interface for accessing configuration that was provided through environmental variables.
     """
 
-    class Node(_Config):
+    class Node(BaseConfig):
         _prefix_ = "NODE"
 
-        # file which contains master's public keys
-        CLIENTS_PUBLIC_KEYS_FILE = field()
+        # file which contains a root public key
+        ROOT_API_USER_PUBLIC_KEY_FILE = field(caster=to_existing_path_caster)
 
-    class Wireguard(_Config):
+    class Wireguard(BaseConfig):
         _prefix_ = "WIREGUARD"
 
         # public hostname of the server
@@ -26,14 +39,14 @@ class Config(_Config):
         # public UDP port being listened on the server
         PUBLIC_PORT = field(caster=to_int)
 
-    class Mongo(_Config):
+    class Mongo(BaseConfig):
         _prefix_ = "MONGO"
 
         HOST = field()
         PORT = field(caster=to_int)
-        USERNAME_FILE = field()
-        PASSWORD_FILE = field()
-        DATABASE = field()
+        USERNAME_FILE = field(caster=to_existing_path_caster)
+        PASSWORD_FILE = field(caster=to_existing_path_caster)
+        DATABASE_FILE = field(caster=to_existing_path_caster)
 
 
 config = Config()

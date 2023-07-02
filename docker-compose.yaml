@@ -1,18 +1,18 @@
 services:
-  wg-node-app:
-    container_name: wg-node-app
+  wg-node:
+    container_name: wg-node
     build: ./
     env_file: .env
     environment:
-      NODE_CLIENTS_PUBLIC_KEYS_FILE: /run/secrets/node_clients_public_keys
+      NODE_ROOT_API_USER_PUBLIC_KEY_FILE: /run/secrets/node/root_api_user_public_key
 
       WIREGUARD_PUBLIC_PORT: 51820  # remember to update the ports section when updating this env var
 
       MONGO_HOST: wg-node-mongo
       MONGO_PORT: 27017
-      MONGO_USERNAME_FILE: /run/secrets/mongo_initdb_root_username
-      MONGO_PASSWORD_FILE: /run/secrets/mongo_initdb_root_password
-      MONGO_DATABASE: wg-node
+      MONGO_USERNAME_FILE: /run/secrets/mongo/username
+      MONGO_PASSWORD_FILE: /run/secrets/mongo/password
+      MONGO_DATABASE_FILE: /run/secrets/mongo/database
 
     volumes:
       - /etc/wg-node/:/etc/wg-node/  # wg-node persistent server key storage
@@ -36,9 +36,8 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
 
     secrets:
-      - node_clients_public_keys
-      - mongo_initdb_root_username
-      - mongo_initdb_root_password
+      - mongo
+      - node
 
   wg-node-mongo:
     image:
@@ -46,25 +45,22 @@ services:
     container_name: wg-node-mongo
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME_FILE=/run/secrets/mongo_initdb_root_username
-      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/mongo_initdb_root_password
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo/username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo/password
+      MONGO_INITDB_DATABASE_FILE: /run/secrets/mongo/database
 
     volumes:
       - ./.mongo-data:/data/db
 
     secrets:
-      - mongo_initdb_root_username
-      - mongo_initdb_root_password
+      - mongo
 
 #    ports:
 #      - "27017:27017"
 
 secrets:
-  node_clients_public_keys:
-    file: secrets/node_clients_public_keys
+  node:
+    file: secrets/node/
 
-  mongo_initdb_root_username:
-    file: secrets/mongo_initdb_root_username
-
-  mongo_initdb_root_password:
-    file: secrets/mongo_initdb_root_password
+  mongo:
+    file: secrets/mongo/

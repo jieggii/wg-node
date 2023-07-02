@@ -1,34 +1,34 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from wg_node.database import Client
+from wg_node.database import WireguardPeer
 
 router = APIRouter(prefix="/node")
 
 
 class NodeStatusResponse(BaseModel):
-    clients_count: int
-    enabled_clients_count: int
+    peers_count: int
+    enabled_peers_count: int
 
 
-@router.get("/status", summary="returns clients count and active clients count")
+@router.get("/status", summary="returns peers count and active peers count")
 async def node_status() -> NodeStatusResponse:
-    clients_count = await Client.all().count()
-    enabled_clients_count = await Client.find(Client.enabled == True).count()  # noqa
+    peers_count = await WireguardPeer.all().count()
+    enabled_peers_count = await WireguardPeer.find(WireguardPeer.enabled == True).count()  # noqa
 
     return NodeStatusResponse(
-        clients_count=clients_count,
-        enabled_clients_count=enabled_clients_count,
+        peers_count=peers_count,
+        enabled_peers_count=enabled_peers_count,
     )
 
 
 class NodeWipeResponse(BaseModel):
-    clients_deleted: int
+    peers_deleted: int
 
 
-@router.delete("/wipe", summary="permanently deletes all clients")
+@router.delete("/wipe", summary="permanently deletes all peers")
 async def node_wipe() -> NodeWipeResponse:
-    all_clients = Client.all()
-    clients_count = await all_clients.count()
-    await all_clients.delete()
-    return NodeWipeResponse(clients_deleted=clients_count)
+    all_peers = WireguardPeer.all()
+    peers_count = await all_peers.count()
+    await all_peers.delete()
+    return NodeWipeResponse(peers_deleted=peers_count)
