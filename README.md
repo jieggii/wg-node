@@ -14,8 +14,8 @@ from a single machine.
 and has some noticeable key differences:
 
 - No frontend UI, only HTTP REST API.
-- All requests to the API must be RSA-signed using client's private key,
-  whose public key is known by server running wg-node.
+- All requests to the API must be RSA-signed using API user's private key,
+  whose public key is known by server running **wg-node**.
 - Uses MongoDB instead of JSON files to store clients.
 
 The application can be run on any GNU/Linux machine whose kernel supports WireGuard (linux 5.6+).
@@ -34,4 +34,4 @@ The application can be run on any GNU/Linux machine whose kernel supports WireGu
 
 ## How to run and use?
 
-Please refer to the [project documentation](https://jieggii.github.io/wg-node) (currently not up-to-date).
+Please refer to the [project documentation](https://jieggii.github.io/wg-node).
