@@ -50,8 +50,8 @@ It means we have
 - HTTP method `DELETE`
 - Hostname `1.1.1.1`
 - Normalized path params: `{"peer_id":"peer-1"}`
-- normalized query params: `{}`
-- normalized request body: `{}`
+- Normalized query params: `{}`
+- Normalized request body: `{}`
 
 Then the resulting concatenated string will be: `DELETE;1.1.1.1;{"peer_id":"peer-1"};{};{}`
 
