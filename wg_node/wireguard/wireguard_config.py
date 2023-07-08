@@ -80,7 +80,7 @@ PostDown =
             if peer.enabled:
                 content += f"""
 # peer_id={peer.peer_id}
-[WireguardPeer]
+[Peer]
 PublicKey = {peer.public_key}
 PresharedKey = {peer.preshared_key}
 AllowedIPs = {peer.address}/32
@@ -95,7 +95,7 @@ PrivateKey = {peer.private_key}
 Address = {peer.address}/24
 DNS = {PEER_DNS}
 
-[WireguardPeer]
+[Peer]
 PublicKey = {self._public_key}
 PresharedKey = {peer.preshared_key}
 Endpoint = {config.Wireguard.PUBLIC_HOSTNAME}:{config.Wireguard.PUBLIC_PORT}
