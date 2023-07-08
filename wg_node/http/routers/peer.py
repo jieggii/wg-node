@@ -68,6 +68,16 @@ async def peer_read(peer_id: str) -> PeerReadResponse:
     )
 
 
+@router.get("/{peer_id}/config", summary="returns peer's wireguard config")
+async def peer_read_config(peer_id: str) -> PlainTextResponse:
+    peer = await WireguardPeer.find_one(WireguardPeer.peer_id == peer_id)
+    if peer is None:
+        raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
+
+    config = WIREGUARD_CONFIG.generate_peer_config(peer)
+    return PlainTextResponse(config)
+
+
 class PeerUpdateResponse(BaseModel):
     enabled: bool
 
@@ -96,13 +106,3 @@ async def peer_delete(peer_id: str) -> PeerDeleteResponse:
     await peer.delete()
     await update_wg_config()
     return PeerDeleteResponse(peer_id=peer.peer_id)
-
-
-@router.get("/{peer_id}/config", summary="returns peer's wireguard config")
-async def peer_read_config(peer_id: str) -> PlainTextResponse:
-    peer = await WireguardPeer.find_one(WireguardPeer.peer_id == peer_id)
-    if peer is None:
-        raise HTTPException(HTTPStatus.NOT_FOUND, "peer not found")
-
-    config = WIREGUARD_CONFIG.generate_peer_config(peer)
-    return PlainTextResponse(config)
