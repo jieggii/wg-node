@@ -31,7 +31,7 @@ WIREGUARD_PUBLIC_HOSTNAME=<SERVER-IP-ADDRESS-OR-DOMAIN-NAME>
 
 ```
 
-## Step 4. Set up _docker secrets_
+## Step 4. Set up docker secrets
 
 !!! note
 

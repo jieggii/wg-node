@@ -4,7 +4,7 @@
 
 So, let's dive in!
 
-## Project architecture
+## Docker containers
 
 The project architecture consists of two parts (and docker containers):
 
@@ -16,11 +16,11 @@ The project architecture consists of two parts (and docker containers):
 
 ### Docker secrets (`./secrets` directory)
 
-There are totally 4 _docker secrets_ in this project:
+There are totally 4 docker secrets in this project:
 
-- `mongo/username` (file) - username for the MongoDB container.
-- `mongo/password` (file) - password for the MongoDB container.
-- `mongo/database` (file) - database name for the MongoDB container.
+- `mongo/username` - username for the MongoDB container.
+- `mongo/password` - password for the MongoDB container.
+- `mongo/database` - database name for the MongoDB container.
 - `node/root_api_user_public_key` - root API user's public key.
 
 ### File containing environmental variables which are necessary to be set (`./.env` file)
@@ -40,6 +40,13 @@ WIREGUARD_PUBLIC_HOSTNAME=
 
 Other useful environmental variables can be found inside `docker-compose.yml`.
 But it is more likely that you will never need to update them.
+
+## API users
+
+When you start **wg-node** for the first time, you already have only one API user—it is **root API user**.
+It's public key is located in `./secrets/node/root_api_user_public_key`.
+The only difference between root API user and other API users is that only root user
+can create and delete API users.
 
 ---
 
