@@ -10,11 +10,11 @@
     Using **wg-node** HTTP API, you can easily create and manage new WireGuard clients,
     get useful information about node.
 
-Important thing to know: **all API requests must be signed using node client's private key**.
+Important thing to know: **all API requests must be signed using API user's private key**.
 What does it mean?
 
-1. HTTP request must contain `Client-Public-Key` header containing (you won't believe) node client's public key.
-2. HTTP request must contain `Request-Params-Signature` header containing (you won't believe) request parameters'
+1. HTTP request must contain `API-User-Public-Key` header containing (you won't believe) node client's public key.
+2. HTTP request must contain `Request-Signature` header containing (you won't believe) request parameters'
    signature.
 
 ### How to sign request parameters?
@@ -30,19 +30,30 @@ For example: `{"foo": "bar", "meow": 7}` -> `{"foo":"bar","meow":7}`
 
 #### Step 2. Concatenate strings you got
 
-Concatenate normalized JSONs like usual strings strictly in this order:
+Concatenate the following strings strictly in this order:
 
-1. path params
-2. query params
-3. request body
+1. HTTP method you are using (e.g. `POST`)
+2. Hostname you are sending request to (e.g. `8.8.8.8`)
+3. Normalized path params
+4. Normalized query params
+5. Normalized request body
 
-For example, if we have
+And add `;` separator between them.
 
-- normalized path params: `{}`
+For example, if we want to delete peer `peer-1` from **wg-node** running on `1.1.1.1`,
+we send the following HTTP request:
+
+> `DELETE http://1.1.1.1/peer/peer-1`.
+
+It means we have
+
+- HTTP method `DELETE`
+- Hostname `1.1.1.1`
+- Normalized path params: `{"peer_id":"peer-1"}`
 - normalized query params: `{}`
-- normalized request body: `{"client_id":"client-1"}`
+- normalized request body: `{}`
 
-then the resulting concatenated string will be: `{}{}{"client_id":"client-1"}`
+Then the resulting concatenated string will be: `DELETE;1.1.1.1;{"peer_id":"peer-1"};{};{}`
 
 #### Step 3. Create signature
 
@@ -51,8 +62,8 @@ Sign the string you got in the previous step using **RSA** algorithm and **SHA-1
 #### Step 4. Set request headers
 
 Tada!
-Put your node client's public key in the `Client-Public-Key` header and
-HEX value of signature you got in `Request-Params-Signature` header and finally send your request!
+Put your API user's public key in the `API-User-Public-Key` header and
+HEX value of signature you've made in `Request-Signature` header and finally send your request!
 
 !!! info
 

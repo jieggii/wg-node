@@ -8,27 +8,20 @@ So, let's dive in!
 
 The project architecture consists of two parts (and docker containers):
 
-- **wg-node-app** - web server which listens for API requests and manages WireGuard config & connections.
+- **wg-node** - web server which listens for API requests and manages WireGuard config & connections.
 - **wg-node-mongo** - MongoDB instance where information about clients' is stored.
   MongoDB's data directory will be mounted to `./.mongo-data` by default.
 
 ## Project directories and files (essentials)
 
-### Docker secrets (`./.secrets` directory)
+### Docker secrets (`./secrets` directory)
 
-There are three _docker secrets_ in this project:
+There are totally 4 _docker secrets_ in this project:
 
-- `mongo_initdb_root_username` (file) - root user username for the MongoDB container.
-- `mongo_initdb_root_password` (file) - root user password for the MongoDB container.
-- `node_clients_public_keys` (directory) - contains files in PEM format with node clients' public keys,
-  for example:
-
-```title=".secrets/node_clients_public_keys/example.pem"
-  -----BEGIN RSA PUBLIC KEY-----
-  todo
-  -----END RSA PUBLIC KEY-----
-
-```
+- `mongo/username` (file) - username for the MongoDB container.
+- `mongo/password` (file) - password for the MongoDB container.
+- `mongo/database` (file) - database name for the MongoDB container.
+- `node/root_api_user_public_key` - root API user's public key.
 
 ### File containing environmental variables which are necessary to be set (`./.env` file)
 
@@ -45,7 +38,7 @@ cp ./.env.example ./.env
 WIREGUARD_PUBLIC_HOSTNAME=
 ```
 
-Other useful environmental variables can be found inside `docker-compose.yaml`.
+Other useful environmental variables can be found inside `docker-compose.yml`.
 But it is more likely that you will never need to update them.
 
 ---
