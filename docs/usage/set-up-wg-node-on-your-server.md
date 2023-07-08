@@ -43,7 +43,7 @@ WIREGUARD_PUBLIC_HOSTNAME=<SERVER-IP-ADDRESS-OR-DOMAIN-NAME>
 At first create `./secrets` directory, where all docker secrets will be located:
 
 ```shell
-mkdir -p "./secrets/mongo ./secrets/node"
+mkdir -p "./secrets/mongo" "./secrets/node"
 ```
 
 ### Step 4.2 Set up secrets for the mongodb container (wg-node-mongo)
