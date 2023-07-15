@@ -23,12 +23,12 @@ async def update_wg_config() -> None:
     logger.info("regenerated and synced WireGuard config")
 
 
-class PeerCreateResponse(BaseModel):
-    address: str
-
-
 class PeerCreateParams(BaseModel):
     peer_id: str = Field(regex=WIREGUARD_PEER_ID_REGEX)
+
+
+class PeerCreateResponse(BaseModel):
+    address: str
 
 
 @router.post("/", summary="creates new peer")
