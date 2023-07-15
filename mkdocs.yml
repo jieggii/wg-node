@@ -50,6 +50,9 @@ nav:
       - "Setup instructions": "./usage/set-up-wg-node-on-your-server.md"
       - "Run wg-node": "./usage/run-wg-node-on-your-server.md"
       - "Manage wg-node instance": "./usage/manage-your-wg-node-instance.md"
+  - "API reference":
+      - "Sending API request": "./api-reference/sending-api-request.md"
+      - "API methods": "./api-reference/api-methods.md"
 
 
 markdown_extensions:
