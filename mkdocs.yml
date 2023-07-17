@@ -51,7 +51,7 @@ nav:
       - "Run wg-node": "./usage/run-wg-node-on-your-server.md"
       - "Manage wg-node instance": "./usage/manage-your-wg-node-instance.md"
   - "API reference":
-      - "Sending API request": "./api-reference/sending-api-request.md"
+      - "Introduction": "./api-reference/introduction.md"
       - "API methods": "./api-reference/api-methods.md"
 
 

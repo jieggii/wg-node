@@ -1,3 +1,3 @@
-# API methods
+# wg-node API methods
 
 TODO
