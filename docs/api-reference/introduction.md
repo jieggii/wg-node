@@ -67,7 +67,9 @@ It means we have
 - Normalized query params: `{}`
 - Normalized request body: `{}`
 
-Then the resulting concatenated string will be: `DELETE;example.com;{"peer_id":"peer-1"};{};{}`
+Then the resulting concatenated string will be:
+
+`DELETE;example.com;{"peer_id":"peer-1"};{};{}`
 
 #### Step 3. Create signature
 
