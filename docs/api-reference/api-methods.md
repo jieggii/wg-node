@@ -1,3 +1,0 @@
-# wg-node API methods
-
-To be continued...

@@ -1,10 +1,10 @@
 # Set up wg-node on your server
 
-> Follow these simple steps to set up **wg-node** on your own server!
+> Follow these simple steps to set up **wg-node** on your own server.
 
 ## Step 1. Ensure that your kernel supports WireGuard
 
-!!! quote "From [official WireGuard documentation](https://www.wireguard.com/compilation#kernel-requirements)"
+!!! quote "From [the official WireGuard documentation](https://www.wireguard.com/compilation#kernel-requirements)"
 
     **WireGuard** requires Linux ≥3.10, with the following configuration options, which are likely already configured in your
     kernel, especially if you're installing via distribution packages.
@@ -21,8 +21,8 @@
 
 You can find installation instructions by clicking on these links:
 
-* [installation instructions for **docker**](https://docs.docker.com/engine/install/)
-* [installation instructions for **docker compose plugin**](https://docs.docker.com/compose/install/)
+* [Installation instructions for **docker**](https://docs.docker.com/engine/install/)
+* [Installation instructions for **docker compose plugin**](https://docs.docker.com/compose/install/)
 
 ## Step 3. Set up `WIREGUARD_PUBLIC_HOSTNAME` environmental variable in the `.env` file
 
@@ -44,7 +44,7 @@ WIREGUARD_PUBLIC_HOSTNAME=<SERVER-IP-ADDRESS-OR-DOMAIN-NAME>
 
 ## Step 4. Set up docker secrets
 
-!!! note
+!!! tip
 
     It would be useful to read about docker secrets from the
     [docker documentation](https://docs.docker.com/engine/swarm/secrets/),

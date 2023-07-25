@@ -50,13 +50,15 @@ nav:
       - "Setup instructions": "./usage/set-up-wg-node-on-your-server.md"
       - "Run wg-node": "./usage/run-wg-node-on-your-server.md"
       - "Manage wg-node instance": "./usage/manage-your-wg-node-instance.md"
-  - "API reference":
-      - "Introduction": "./api-reference/introduction.md"
-      - "API methods": "./api-reference/api-methods.md"
+  - "API":
+      - "Introduction to the wg-node API": "./api/introduction.md"
+      - "API methods": "./api/methods.md"
+      - "API clients": "./api/clients.md"
 
 
 markdown_extensions:
   - admonition
+  - tables
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span

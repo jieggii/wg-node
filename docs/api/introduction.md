@@ -1,12 +1,14 @@
 # Introduction to wg-node HTTP API
 
-> Using **wg-node** HTTP API, you can easily create and manage new WireGuard clients,
+> Using **wg-node HTTP API** you can easily create and manage new WireGuard peers,
 > get useful information about node.
 
 ## About wg-node API
 
-wg-node API follows the **REST** standard.
-All requests to the API are executed by means of HTTP requests.
+!!! info
+
+    **wg-node API** follows the **REST** standard.
+    All requests to the API are executed by means of HTTP requests.
 
 When using wg-node API you can operate with the following objects:
 
@@ -18,7 +20,7 @@ The API provides convenient methods to manipulate with them all.
 
 !!! info
 
-      List of available API methods can be found [here]().
+      List of available API methods can be found [here](/wg-node/api/methods).
 
 ## Signing API request
 
