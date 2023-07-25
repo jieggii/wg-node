@@ -16,7 +16,7 @@ and has some noticeable key differences:
 - No frontend UI, only HTTP REST API.
 - All requests to the API must be RSA-signed using API user's private key,
   whose public key is known by server running **wg-node**.
-- Uses MongoDB instead of JSON files to store clients.
+- Uses MongoDB to store information about peers.
 
 The application can be run on any GNU/Linux machine whose kernel supports WireGuard (linux 3.10+).
 
