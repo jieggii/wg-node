@@ -28,6 +28,9 @@ dev = [
 [tool.pdm.scripts]
 fmt.shell = "isort ./wg_node/ && black ./wg_node/"
 
+[tool.setuptools]
+py-modules = ["wg_node"]
+
 [tool.black]
 line-length = 120
 target-version = ["py311"]
