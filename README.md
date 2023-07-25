@@ -18,7 +18,7 @@ and has some noticeable key differences:
   whose public key is known by server running **wg-node**.
 - Uses MongoDB instead of JSON files to store clients.
 
-The application can be run on any GNU/Linux machine whose kernel supports WireGuard (linux 5.6+).
+The application can be run on any GNU/Linux machine whose kernel supports WireGuard (linux 3.10+).
 
 ## Dependencies
 

@@ -1,22 +1,33 @@
 # Set up wg-node on your server
 
-> To set up **wg-node** on your own server, you will need to follow some simple steps.
+> Follow these simple steps to set up **wg-node** on your own server!
 
-## Step 1. Ensure that your machine supports WireGuard
+## Step 1. Ensure that your kernel supports WireGuard
 
-Please ensure that your kernel supports WireGuard. (#TODO: how?)
+!!! quote "From [official WireGuard documentation](https://www.wireguard.com/compilation#kernel-requirements)"
 
-## Step 2. Install dependencies
+    **WireGuard** requires Linux ≥3.10, with the following configuration options, which are likely already configured in your
+    kernel, especially if you're installing via distribution packages.
+
+    * `CONFIG_NET` for basic networking support
+    * `CONFIG_INET` for basic IP support
+    * `CONFIG_NET_UDP_TUNNEL` for sending and receiving UDP packets
+    * `CONFIG_CRYPTO_ALGAPI` for crypto_xor
+
+## Step 2. Install docker and docker compose plugin
 
 **wg-node** is being run in docker containers, so the only dependencies you need to install are
 [docker](https://www.docker.com/) and [docker compose plugin](https://docs.docker.com/compose/).
 
-Install them and make sure that they are set up properly.
+You can find installation instructions by clicking on these links:
 
-## Step 3. Set up `WIREGUARD_PUBLIC_HOSTNAME` environmental variable
+* [installation instructions for **docker**](https://docs.docker.com/engine/install/)
+* [installation instructions for **docker compose plugin**](https://docs.docker.com/compose/install/)
+
+## Step 3. Set up `WIREGUARD_PUBLIC_HOSTNAME` environmental variable in the `.env` file
 
 `WIREGUARD_PUBLIC_HOSTNAME` environmental variable should be set to your machine's public IP or
-domain name, which is associated with the machine, for example `example.com` or `8.8.8.8`.
+domain name, which is associated with the machine, for example `example.com` or `1.2.3.4`.
 
 The variable should be located in the `./.env` file.
 You can use `./.env.example` file as template to avoid typos:
@@ -35,18 +46,21 @@ WIREGUARD_PUBLIC_HOSTNAME=<SERVER-IP-ADDRESS-OR-DOMAIN-NAME>
 
 !!! note
 
-    If you have never heard about docker secrets, it would be useful to read about them
-    from the [docker documentation](https://docs.docker.com/engine/swarm/secrets/).
+    It would be useful to read about docker secrets from the
+    [docker documentation](https://docs.docker.com/engine/swarm/secrets/),
+    if you have never heard about them.
 
 ### Step 4.1. Create directory for docker secrets
 
-At first create `./secrets` directory, where all docker secrets will be located:
+At first create `./secrets` directory and some subdirectories inside it, where all docker secrets will be located:
 
 ```shell
-mkdir -p "./secrets/mongo" "./secrets/node"
+mkdir secrets
+mkdir secrets/node
+mkdir secrets/mongo
 ```
 
-### Step 4.2 Set up secrets for the mongodb container (wg-node-mongo)
+### Step 4.2 Set up secrets for the MongoDB container (`wg-node-mongo`)
 
 `mongo/username`, `mongo/password` and `mongo/username` secrets stand for MongoDB user credentials and database name.
 You need to come up with them yourself!
