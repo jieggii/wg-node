@@ -3,7 +3,7 @@ import pathlib
 from aiofile import async_open
 from loguru import logger
 
-from wg_node.config import config
+from wg_node.env import env
 from wg_node.database import WireguardPeer
 from wg_node.util import execute_cmd
 from wg_node.wireguard.key import generate_keypair
@@ -98,7 +98,7 @@ DNS = {PEER_DNS}
 [Peer]
 PublicKey = {self._public_key}
 PresharedKey = {peer.preshared_key}
-Endpoint = {config.Wireguard.PUBLIC_HOSTNAME}:{config.Wireguard.PUBLIC_PORT}
+Endpoint = {env.Wireguard.PUBLIC_HOSTNAME}:{env.Wireguard.PUBLIC_PORT}
 AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = {PEER_PERSISTENT_KEEPALIVE}"""
         return content
@@ -109,15 +109,15 @@ PersistentKeepalive = {PEER_PERSISTENT_KEEPALIVE}"""
         execute_cmd("wg syncconf wg0 <(wg-quick strip wg0)")
 
 
-# initialize server key storage
+# initialize server key storage:
 key_storage = KeyStorage(path=KEY_STORAGE_PATH)
 
 if not key_storage.exists():
     _private_key, _public_key = generate_keypair()
     key_storage.store_keys(private_key=_private_key, public_key=_public_key)
-    logger.info(f"generated and stored server keypair")
+    logger.info(f"generated and stored WireGuard server keypair")
 
-# initialize WireGuard config
+# initialize WireGuard config:
 _private_key, _public_key = key_storage.read_keys()
 WIREGUARD_CONFIG = WireguardConfig(
     path=WG_CONFIG_PATH,

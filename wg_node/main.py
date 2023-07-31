@@ -3,7 +3,7 @@ import asyncio
 from fastapi import Depends, FastAPI
 from loguru import logger
 
-from wg_node.config import config
+from wg_node.env import env
 from wg_node.database import APIUser, WireguardPeer, init_database
 from wg_node.docker_secrets import read_docker_secret
 from wg_node.http.dependencies import verify_request_signature
@@ -15,37 +15,31 @@ from wg_node.wireguard.wireguard_config import WIREGUARD_CONFIG
 async def init_app() -> None:
     """
     Performs all necessary initializations which are required before starting the application:
-    - initializes database
-    - creates WireGuard configuration file
-    - brings up the wg0 WireGuard interface
+    - Initializes database.
+    - Creates WireGuard configuration file.
+    - Brings up the wg0 WireGuard interface.
     """
 
     # initialize database:
     await init_database(
-        host=config.Mongo.HOST,
-        port=config.Mongo.PORT,
-        user=read_docker_secret(config.Mongo.USERNAME_FILE),
-        password=read_docker_secret(config.Mongo.PASSWORD_FILE),
-        database=read_docker_secret(config.Mongo.DATABASE_FILE),
+        host=env.Mongo.HOST,
+        port=env.Mongo.PORT,
+        user=read_docker_secret(env.Mongo.USERNAME_FILE),
+        password=read_docker_secret(env.Mongo.PASSWORD_FILE),
+        database=read_docker_secret(env.Mongo.DATABASE_FILE),
     )
 
     # create root API user if it doesn't exist:
     root_api_user_public_key = pem_rsa_key_to_str(
-        read_docker_secret(config.Node.ROOT_API_USER_PUBLIC_KEY_FILE),
+        read_docker_secret(env.Node.ROOT_API_USER_PUBLIC_KEY_FILE),
     )
     root_api_user = await APIUser.find_one(APIUser.public_key == root_api_user_public_key)
-    if root_api_user:
+    if root_api_user is None:
+        await APIUser(public_key=root_api_user_public_key, is_root_user=True).insert()
+        logger.info(f"created root API user")
+    else:
         # ensure that existing root user is marked as root in the database
         assert root_api_user.is_root_user
-    else:
-        root_api_user_public_key = pem_rsa_key_to_str(
-            read_docker_secret(config.Node.ROOT_API_USER_PUBLIC_KEY_FILE),
-        )
-        await APIUser(
-            public_key=root_api_user_public_key,
-            is_root_user=True,
-        ).insert()
-        logger.info(f"Created root API user.")
 
     # generate, write and sync WireGuard config:
     peers = await WireguardPeer.all().to_list()  # fetch all peers
@@ -57,30 +51,21 @@ async def init_app() -> None:
     WIREGUARD_CONFIG.sync()  # apply saved configuration
 
     enabled_peers_count = await WireguardPeer.find(WireguardPeer.enabled == True).count()  # noqa
-    peers_count = await WireguardPeer.all().count()
-
-    users_count = await APIUser.all().count()
-
-    logger.info(
-        f"Successfully initialized wg-node application. "
-        f"Peers count: {peers_count} ({enabled_peers_count} enabled), "
-        f"API users count: {users_count}.",
-    )
 
 
 loop = asyncio.get_running_loop()
-init_task = loop.create_task(init_app())
+init_app_task = loop.create_task(init_app())
 
 
-def check_init_task_exception(_):
-    exception = init_task.exception()
+def init_app_task_done_callback(task: asyncio.Task):
+    exception = task.exception()
     if exception:
-        raise exception
+        raise RuntimeError(f"got exception during wg-node initialization: {exception}")
+    logger.info("successfully initialized wg-node application")
 
 
-init_task.add_done_callback(check_init_task_exception)
+init_app_task.add_done_callback(init_app_task_done_callback)
 
-# initialize FastAPI app
 app = FastAPI(
     title="wg-node",
     description="Deploy and manage your WireGuard nodes with one hand!",

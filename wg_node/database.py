@@ -39,7 +39,7 @@ class WireguardPeer(Document):
 
 
 class APIUser(Document):
-    """Represents an identified trusted API user."""
+    """Represents an identified and trusted API user."""
 
     public_key: Indexed(str, unique=True)
 
