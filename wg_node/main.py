@@ -3,9 +3,9 @@ import asyncio
 from fastapi import Depends, FastAPI
 from loguru import logger
 
-from wg_node.env import env
 from wg_node.database import APIUser, WireguardPeer, init_database
 from wg_node.docker_secrets import read_docker_secret
+from wg_node.env import env
 from wg_node.http.dependencies import verify_request_signature
 from wg_node.http.routers import api_user, node, peer
 from wg_node.util import execute_cmd, pem_rsa_key_to_str

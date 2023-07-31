@@ -3,8 +3,8 @@ import pathlib
 from aiofile import async_open
 from loguru import logger
 
-from wg_node.env import env
 from wg_node.database import WireguardPeer
+from wg_node.env import env
 from wg_node.util import execute_cmd
 from wg_node.wireguard.key import generate_keypair
 from wg_node.wireguard.key_storage import KeyStorage
