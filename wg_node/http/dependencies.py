@@ -60,14 +60,12 @@ async def verify_request_signature(
         + _SIGNED_PARTS_SEPARATOR
         + body_bytes
     )
-    # print(f"bytes: {signed_bytes}", flush=True)
     try:
         signature_hex = bytes.fromhex(request_signature)
     except ValueError:
         raise HTTPException(HTTPStatus.BAD_REQUEST, "invalid request signature")
 
     try:
-        # print(f"{request_signature=}", flush=True)
         rsa.verify(
             message=signed_bytes,
             signature=signature_hex,
