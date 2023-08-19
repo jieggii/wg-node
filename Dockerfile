@@ -30,4 +30,4 @@ EXPOSE 51820/udp
 EXPOSE 51821/tcp
 EXPOSE 8080
 
-ENTRYPOINT ["dumb-init", "python", "-m", "uvicorn", "wg_node.main:app", "--host", "0.0.0.0", "--port", "8080"]#ENTRYPOINT ["dumb-init", "python", "-m", "uvicorn", "wg_node.main:app", "--host", "0.0.0.0", "--port", "8080"]#ENTRYPOINT ["dumb-init", "python", "-m", "uvicorn", "wg_node.main:app", "--host", "0.0.0.0", "--port", "8080"]
+ENTRYPOINT ["dumb-init", "python", "-m", "uvicorn", "wg_node.main:app", "--host", "0.0.0.0", "--port", "8080"]
